@@ -9,10 +9,6 @@ on:
         description: 'Major version of the installer to use'
         required: true
         type: string
-      installer-version:
-        description: 'Installer version to use'
-        required: true
-        type: string
       git-tag:
         description: 'Git tag to build'
         required: true
@@ -23,7 +19,7 @@ on:
         type: string
 
 env:
-  EVERYTHING_INSTALLER_URL: https://download.fedoraproject.org/pub/fedora/linux/releases/${{ inputs.installer-major-version }}/Everything/x86_64/iso/Fedora-Everything-netinst-x86_64-${{ inputs.installer-version }}.iso
+  EVERYTHING_INSTALLER_URL: https://download.fedoraproject.org/pub/fedora/linux/releases/${{ inputs.installer-major-version }}/Everything/x86_64/os/images/boot.iso
   ISO_FILENAME: ${{ inputs.image-name }}.iso
   ARTIFACT_NAME: ${{ inputs.image-name }}
 

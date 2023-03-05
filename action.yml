@@ -8,9 +8,6 @@ inputs:
   installer-major-version:
     description: 'Major version of the installer to use'
     required: true
-  installer-version:
-    description: 'Installer version to use'
-    required: true
   kickstart-file-path:
     description: 'Path to the kickstart file'
     required: true
@@ -48,7 +45,9 @@ runs:
     - name: Download Fedora Everything Installer
       shell: bash
       run: |
-        curl -L https://download.fedoraproject.org/pub/fedora/linux/releases/${{ inputs.installer-major-version }}/Everything/x86_64/iso/Fedora-Everything-netinst-x86_64-${{ inputs.installer-version }}.iso -o Fedora-Everything-netinst-x86_64.iso
+        curl -L $EVERYTHING_INSTALLER_URL -o Fedora-Everything-netinst-x86_64.iso
+      env:
+        EVERYTHING_INSTALLER_URL: https://download.fedoraproject.org/pub/fedora/linux/releases/${{ inputs.installer-major-version }}/Everything/x86_64/os/images/boot.iso
 
     - name: Build ISO
       shell: bash

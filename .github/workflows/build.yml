@@ -30,18 +30,14 @@ jobs:
         with:
           ref: ${{ inputs.git-tag }}
 
-      - name: DEBUG
-        run: |
-          echo "Current directory: $(pwd)"
-          echo "Contents of current directory:"
-          ls -la
-          echo "Current OS:"
-          cat /etc/os-release
-
       - name: Pull Fedora Everything Installer ISO
         run: |
           mkdir -p /tmp/iso
           curl -L $EVERYTHING_INSTALLER_URL -o /tmp/iso/Fedora-Everything-netinst-x86_64.iso
+
+      - name: Install Dependencies
+        run: |
+          dnf install -y mkksiso
 
       - name: Build ISO
         run: |

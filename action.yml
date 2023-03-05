@@ -54,6 +54,9 @@ runs:
       shell: bash
       if: ${{ inputs.release-artifact }}
       run: |
+        echo "PWD: $PWD"
+        ls -la
+        git status
         gh release upload ${{ inputs.git-tag }} ${{ inputs.image-name }}.iso --clobber
       env:
         GH_TOKEN: ${{ inputs.github-token }}

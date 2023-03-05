@@ -12,11 +12,6 @@ inputs:
     description: 'Path to the kickstart file'
     required: true
 
-outputs:
-  iso-path:
-    description: 'Path to the ISO file'
-    value: ${{ env.ISO_FILENAME }}
-
 runs:
   using: composite
   steps:
@@ -34,5 +29,12 @@ runs:
 
     - name: Build ISO
       shell: bash
+      id: build
       run: |
         mkksiso --ks ${{ inputs.kickstart-file-path }} Fedora-Everything-netinst-x86_64.iso ${{ inputs.image-name }}.iso
+        echo "ISO_FILENAME=${{ inputs.image-name }}.iso" >> $GITHUB_OUTPUTS
+
+outputs:
+  iso-path:
+    description: 'Path to the generated ISO'
+    value: ${{ steps.build.outputs.ISO_FILENAME }}

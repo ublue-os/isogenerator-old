@@ -30,18 +30,22 @@ runs:
   using: composite
   steps:
     - name: Install Dependencies
+      shell: bash
       run: |
         dnf install -y lorax curl
 
     - name: Download Fedora Everything Installer
+      shell: bash
       run: |
         curl -L https://download.fedoraproject.org/pub/fedora/linux/releases/${{ inputs.installer-major-version }}/Everything/x86_64/iso/Fedora-Everything-netinst-x86_64-${{ inputs.installer-version }}.iso -o Fedora-Everything-netinst-x86_64.iso
 
     - name: Build ISO
+      shell: bash
       run: |
         mkksiso --ks ${{ inputs.kickstart-file-path }} Fedora-Everything-netinst-x86_64.iso ${{ inputs.image-name }}.iso
 
     - name: Upload to release
+      shell: bash
       if: ${{ inputs.release-artifact }}
       run: |
         gh release upload ${{ inputs.git-tag }} ${{ inputs.image-name }}.iso

@@ -33,15 +33,15 @@ runs:
       run: |
         mkksiso --ks ${{ inputs.kickstart-file-path }} Fedora-Everything-netinst-x86_64.iso ${{ inputs.image-name }}.iso
 
+    - name: Upload to release
+      run: |
+        gh release upload ${{ inputs.git-tag }} ${{ inputs.image-name }}.iso
+      env:
+        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
     - name: Upload Artifact
       uses: actions/upload-artifact@v3
       with:
         name: ${{ inputs.image-name }}
         path: |
           ${{ inputs.image-name }}.iso
-
-    - name: Upload to release
-      run: |
-        gh release upload ${{ inputs.git-tag }} ${{ inputs.image-name }}.iso
-      env:
-        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

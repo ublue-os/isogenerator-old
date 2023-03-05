@@ -45,7 +45,7 @@ jobs:
 
       - name: Build ISO
         run: |
-          mkksiso ${{ inputs.kickstart-file-path }} ublue.ks Fedora-Everything-netinst-x86_64.iso ${{ env.ISO_FILENAME }}
+          mkksiso --ks ${{ inputs.kickstart-file-path }} Fedora-Everything-netinst-x86_64.iso ${{ env.ISO_FILENAME }}
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v3

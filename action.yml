@@ -1,5 +1,5 @@
 name: Release ISO
-description: 'Build and release an ISO'
+description: 'Builds an ISO bundled with the provided Kickstart configuration'
 
 inputs:
   image-name:

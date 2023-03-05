@@ -38,7 +38,6 @@ jobs:
 
       - name: Pull Fedora Everything Installer ISO
         run: |
-          mkdir -p /tmp/iso
           curl -L $EVERYTHING_INSTALLER_URL -o Fedora-Everything-netinst-x86_64.iso
 
       - name: Install Dependencies
@@ -74,7 +73,6 @@ jobs:
 
       - name: Attach Artifact to Release
         run: |
-          echo "Publishing ${{ env.ISO_FILENAME }}..."
           gh release upload ${{ inputs.git-tag }} ${{ env.ISO_FILENAME }}
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

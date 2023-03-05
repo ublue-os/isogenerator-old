@@ -45,6 +45,8 @@ jobs:
 
       - name: Build ISO
         run: |
+          ls -la
+          echo "PWD: $PWD"
           mkksiso --ks ${{ inputs.kickstart-file-path }} Fedora-Everything-netinst-x86_64.iso ${{ env.ISO_FILENAME }}
 
       - name: Upload Artifact

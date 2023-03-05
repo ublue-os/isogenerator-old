@@ -75,6 +75,6 @@ jobs:
 
       - name: Attach Artifact to Release
         run: |
-          gh release upload ${{ inputs.git-tag }} ${{ env.ISO_FILENAME }}
+          gh release upload ${{ inputs.git-tag }} ${{ env.ISO_FILENAME }} --clobber
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

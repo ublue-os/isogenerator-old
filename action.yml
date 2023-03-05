@@ -18,7 +18,7 @@ inputs:
     description: 'Path to the kickstart file'
     required: true
   upload-artifact:
-    description: 'Upload the artifact to the release'
+    description: 'Upload the artifact to the workflow'
     required: false
     default: 'true'
   release-artifact:

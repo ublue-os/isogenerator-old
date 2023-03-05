@@ -1,0 +1,47 @@
+name: Release ISO
+description: 'Build and release an ISO'
+
+inputs:
+  git-tag:
+    description: 'Git tag to use for the release'
+    required: true
+  image-name:
+    description: 'Name of the image to build'
+    required: true
+  installer-major-version:
+    description: 'Major version of the installer to use'
+    required: true
+  installer-version:
+    description: 'Installer version to use'
+    required: true
+  kickstart-file-path:
+    description: 'Path to the kickstart file'
+    required: true
+
+runs:
+  using: composite
+  steps:
+    - name: Install Dependencies
+      run: |
+        dnf install -y lorax curl
+
+    - name: Download Fedora Everything Installer
+      run: |
+        curl -L https://download.fedoraproject.org/pub/fedora/linux/releases/${{ inputs.installer-major-version }}/Everything/x86_64/iso/Fedora-Everything-netinst-x86_64-${{ inputs.installer-version }}.iso -o Fedora-Everything-netinst-x86_64.iso
+
+    - name: Build ISO
+      run: |
+        mkksiso --ks ${{ inputs.kickstart-file-path }} Fedora-Everything-netinst-x86_64.iso ${{ inputs.image-name }}.iso
+
+    - name: Upload Artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: ${{ inputs.image-name }}
+        path: |
+          ${{ inputs.image-name }}.iso
+
+    - name: Upload to release
+      run: |
+        gh release upload ${{ inputs.git-tag }} ${{ inputs.image-name }}.iso
+      env:
+        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

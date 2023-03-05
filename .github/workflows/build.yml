@@ -20,14 +20,14 @@ on:
 
 env:
   EVERYTHING_INSTALLER_URL: https://download.fedoraproject.org/pub/fedora/linux/releases/${{ inputs.fedora-version }}/Everything/x86_64/iso/Fedora-Everything-netinst-x86_64-${{ inputs.fedora-version }}-1.7.iso
+  ISO_FILENAME: ${{ inputs.image-name }}-${{ inputs.fedora-version }}.iso
+  ARTIFACT_NAME: ${{ inputs.image-name }}-${{ inputs.fedora-version }}
 
 jobs:
   build-iso:
     runs-on: ubuntu-latest
     container: fedora:latest
 
-    env:
-      ISO_FILENAME: ${{ inputs.image-name }}-${{ inputs.fedora-version }}.iso
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -45,21 +45,18 @@ jobs:
 
       - name: Build ISO
         run: |
-          ls -la
-          echo "PWD: $PWD"
           mkksiso --ks ${{ inputs.kickstart-file-path }} Fedora-Everything-netinst-x86_64.iso ${{ env.ISO_FILENAME }}
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v3
         with:
-          name: ${{ inputs.image-name }}-${{ inputs.fedora-version }}
+          name: ${{ env.ARTIFACT_NAME }}
           path: |
-            ${{ inputs.image-name }}-${{ inputs.fedora-version }}.iso
+            ${{ env.ISO_FILENAME }}
 
   publish-iso:
     needs: build-iso
     runs-on: ubuntu-latest
-    if: false
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -69,9 +66,9 @@ jobs:
       - name: Download Artifact
         uses: actions/download-artifact@v3
         with:
-          name: ${{ inputs.image-name }}-${{ inputs.fedora-version }}.iso
+          name: ${{ env.ARTIFACT_NAME }}
 
       - name: Attach Artifact to Release
         run: |
           echo "Publishing ${{ inputs.image-name }}-${{ inputs.fedora-version }}.iso"
-          gh release upload ${{ inputs.git-tag }} ${{ inputs.image-name }}-${{ inputs.fedora-version }}.iso
+          gh release upload ${{ inputs.git-tag }} ${{ env.ISO_FILENAME }}

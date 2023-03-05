@@ -17,6 +17,14 @@ inputs:
   kickstart-file-path:
     description: 'Path to the kickstart file'
     required: true
+  upload-artifact:
+    description: 'Upload the artifact to the release'
+    required: false
+    default: 'true'
+  release-artifact:
+    description: 'Upload the artifact to the release'
+    required: false
+    default: 'true'
 
 runs:
   using: composite
@@ -34,6 +42,7 @@ runs:
         mkksiso --ks ${{ inputs.kickstart-file-path }} Fedora-Everything-netinst-x86_64.iso ${{ inputs.image-name }}.iso
 
     - name: Upload to release
+      if: ${{ inputs.release-artifact }}
       run: |
         gh release upload ${{ inputs.git-tag }} ${{ inputs.image-name }}.iso
       env:
@@ -41,6 +50,7 @@ runs:
 
     - name: Upload Artifact
       uses: actions/upload-artifact@v3
+      if: ${{ inputs.upload-artifact }}
       with:
         name: ${{ inputs.image-name }}
         path: |

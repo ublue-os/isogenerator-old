@@ -57,6 +57,8 @@ jobs:
   publish-iso:
     needs: build-iso
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -72,3 +74,5 @@ jobs:
         run: |
           echo "Publishing ${{ inputs.image-name }}-${{ inputs.fedora-version }}.iso"
           gh release upload ${{ inputs.git-tag }} ${{ env.ISO_FILENAME }}
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

@@ -13,15 +13,15 @@ on:
         description: 'Git tag to build'
         required: true
         type: string
-      gpg-key:
-        description: 'Path to GPG key'
-        required: true
-        secret: true
-        type: string
-    secrets:
-      cosign-private-key:
-        description: 'Cosign private key'
-        required: true
+      #cosign-public-key-path:
+      #  description: 'Path to public GPG key'
+      #  required: true
+      #  secret: true
+      #  type: string
+    #secrets:
+    #  cosign-private-key:
+    #    description: 'Cosign private key'
+    #    required: true
 
 env:
   EVERYTHING_INSTALLER_URL: https://download.fedoraproject.org/pub/fedora/linux/releases/${{ inputs.fedora-version }}/Everything/x86_64/iso/Fedora-Everything-netinst-x86_64-${{ inputs.fedora-version }}.iso
@@ -47,17 +47,20 @@ jobs:
           mkksiso ublue.ks Fedora-Everything-netinst-x86_64.iso ${{ env.ISO_FILENAME }}
 
       - name: Setup Cosign
+        if: false
         uses: sigstore/cosign-installer@3
         with:
           cosign-release: 'v2.0.0'
 
       - name: Sign ISO
+        if: false
         run: |
           cosign sign blob -key ${{ secrets.cosign-private-key }} --output-signature ${{ env.ISO_FILENAME }}.sig ${{ env.ISO_FILENAME }}
         env:
           COSIGN_PRIVATE_KEY: ${{ secrets.cosign-private-key }}
 
       - name: Verify ISO
+        if: false
         run: |
           cosign verify-blob --key ${{ inputs.gpg-key }} --signature $(${{ env.ISO_FILENAME }}.sig) ${{ env.ISO_FILENAME }}
 
@@ -67,7 +70,6 @@ jobs:
           name: ${{ inputs.image-name }}-${{ inputs.fedora-version }}
           path: |
             ${{ inputs.image-name }}-${{ inputs.fedora-version }}.iso
-            ${{ inputs.image-name }}-${{ inputs.fedora-version }}.iso.sig
 
   publish-iso:
     needs: build-iso

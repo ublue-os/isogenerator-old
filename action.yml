@@ -61,7 +61,7 @@ runs:
         echo "PWD: $PWD"
         ls -la
         git status
-        gh release upload ${{ inputs.git-tag }} ${{ inputs.image-name }}.iso --clobber
+        gh release upload ${{ inputs.git-tag }} ${{ inputs.image-name }}.iso --clobber --repo ${{ github.repository }}
       env:
         GH_TOKEN: ${{ inputs.github-token }}
 

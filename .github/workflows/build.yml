@@ -5,6 +5,10 @@ on:
         description: 'Name of the image to build'
         required: true
         type: string
+      installer-major-version:
+        description: 'Major version of the installer to use'
+        required: true
+        type: string
       installer-version:
         description: 'Installer version to use'
         required: true
@@ -19,9 +23,7 @@ on:
         type: string
 
 env:
-  # Extract the major version from the installer version (e.g. 37-1.7 -> 37)
-  EVERYTHING_INSTALLER_MAJOR_VERSION: ${{ inputs.installer-version.split('-')[0] }}
-  EVERYTHING_INSTALLER_URL: https://download.fedoraproject.org/pub/fedora/linux/releases/${{ env.EVERYTHING_INSTALLER_MAJOR_VERSION }}/Everything/x86_64/iso/Fedora-Everything-netinst-x86_64-${{ inputs.installer-version }}.iso
+  EVERYTHING_INSTALLER_URL: https://download.fedoraproject.org/pub/fedora/linux/releases/${{ inputs.installer-major-version }}/Everything/x86_64/iso/Fedora-Everything-netinst-x86_64-${{ inputs.installer-version }}.iso
   ISO_FILENAME: ${{ inputs.image-name }}.iso
   ARTIFACT_NAME: ${{ inputs.image-name }}
 

@@ -25,6 +25,9 @@ inputs:
     description: 'Upload the artifact to the release'
     required: false
     default: 'true'
+  github-token:
+    description: 'GitHub token to use for the release'
+    required: true
 
 runs:
   using: composite
@@ -50,7 +53,7 @@ runs:
       run: |
         gh release upload ${{ inputs.git-tag }} ${{ inputs.image-name }}.iso
       env:
-        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        GH_TOKEN: ${{ inputs.github-token }}
 
     - name: Upload Artifact
       uses: actions/upload-artifact@v3

@@ -1,0 +1,30 @@
+on:
+  workflow_call:
+    inputs:
+      image-name:
+        description: 'Name of the image to build'
+        required: true
+        type: string
+      fedora-version:
+        description: 'Fedora version to build'
+        required: true
+        type: string
+
+env:
+  EVERYTHING_INSTALLER_URL: https://download.fedoraproject.org/pub/fedora/linux/releases/${{ inputs.fedora-version }}/Everything/x86_64/iso/Fedora-Everything-netinst-x86_64-${{ inputs.fedora-version }}.iso
+
+jobs:
+  build-iso:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Pull Fedora Everything Installer ISO
+        run: |
+          mkdir -p /tmp/iso
+          curl -L $EVERYTHING_INSTALLER_URL -o /tmp/iso/Fedora-Everything-netinst-x86_64.iso
+
+      - name: Build ISO
+        run: |
+          mkksiso ublue.ks Fedora-Everything-netinst-x86_64.iso ${{ inputs.image-name }}-${{ inputs.fedora-version }}.iso

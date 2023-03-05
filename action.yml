@@ -11,20 +11,6 @@ inputs:
   kickstart-file-path:
     description: 'Path to the kickstart file'
     required: true
-  upload-artifact:
-    description: 'Upload the artifact to the workflow'
-    required: false
-    default: 'false'
-  release-artifact:
-    description: 'Upload the artifact to the release'
-    required: false
-    default: 'false'
-  git-tag:
-    description: 'Git tag to use for the release.  Required if release-artifact is true.'
-    required: false
-  github-token:
-    description: 'GitHub token to use for the release.  Required if release-artifact is true.'
-    required: false
 
 outputs:
   iso-path:
@@ -53,22 +39,3 @@ runs:
       shell: bash
       run: |
         mkksiso --ks ${{ inputs.kickstart-file-path }} Fedora-Everything-netinst-x86_64.iso ${{ inputs.image-name }}.iso
-
-    - name: Upload to release
-      shell: bash
-      if: ${{ inputs.release-artifact }}
-      run: |
-        echo "PWD: $PWD"
-        ls -la
-        git status
-        gh release upload ${{ inputs.git-tag }} ${{ inputs.image-name }}.iso --clobber --repo ${{ github.repository }}
-      env:
-        GH_TOKEN: ${{ inputs.github-token }}
-
-    - name: Upload Artifact
-      uses: actions/upload-artifact@v3
-      if: ${{ inputs.upload-artifact }}
-      with:
-        name: ${{ inputs.image-name }}
-        path: |
-          ${{ inputs.image-name }}.iso

@@ -46,24 +46,6 @@ jobs:
         run: |
           mkksiso ublue.ks Fedora-Everything-netinst-x86_64.iso ${{ env.ISO_FILENAME }}
 
-      - name: Setup Cosign
-        if: false
-        uses: sigstore/cosign-installer@3
-        with:
-          cosign-release: 'v2.0.0'
-
-      - name: Sign ISO
-        if: false
-        run: |
-          cosign sign blob -key ${{ secrets.cosign-private-key }} --output-signature ${{ env.ISO_FILENAME }}.sig ${{ env.ISO_FILENAME }}
-        env:
-          COSIGN_PRIVATE_KEY: ${{ secrets.cosign-private-key }}
-
-      - name: Verify ISO
-        if: false
-        run: |
-          cosign verify-blob --key ${{ inputs.gpg-key }} --signature $(${{ env.ISO_FILENAME }}.sig) ${{ env.ISO_FILENAME }}
-
       - name: Upload Artifact
         uses: actions/upload-artifact@v3
         with:

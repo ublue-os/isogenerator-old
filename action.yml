@@ -32,7 +32,7 @@ runs:
       id: build
       run: |
         mkksiso --ks ${{ inputs.kickstart-file-path }} Fedora-Everything-netinst-x86_64.iso ${{ inputs.image-name }}.iso
-        echo "ISO_FILENAME=${{ inputs.image-name }}.iso" >> $GITHUB_OUTPUTS
+        echo "ISO_FILENAME=${{ inputs.image-name }}.iso" >> $GITHUB_OUTPUT
 
 outputs:
   iso-path:

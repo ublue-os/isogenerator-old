@@ -19,7 +19,7 @@ on:
         type: string
 
 env:
-  EVERYTHING_INSTALLER_URL: https://download.fedoraproject.org/pub/fedora/linux/releases/${{ inputs.fedora-version }}/Everything/x86_64/iso/Fedora-Everything-netinst-x86_64-${{ inputs.fedora-version }}.iso
+  EVERYTHING_INSTALLER_URL: https://download.fedoraproject.org/pub/fedora/linux/releases/${{ inputs.fedora-version }}/Everything/x86_64/iso/Fedora-Everything-netinst-x86_64-${{ inputs.fedora-version }}-1.7.iso
 
 jobs:
   build-iso:

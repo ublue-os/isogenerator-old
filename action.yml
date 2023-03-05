@@ -54,7 +54,7 @@ runs:
       shell: bash
       if: ${{ inputs.release-artifact }}
       run: |
-        gh release upload ${{ inputs.git-tag }} ${{ inputs.image-name }}.iso
+        gh release upload ${{ inputs.git-tag }} ${{ inputs.image-name }}.iso --clobber
       env:
         GH_TOKEN: ${{ inputs.github-token }}
 

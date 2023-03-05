@@ -24,9 +24,6 @@ runs:
       shell: bash
       run: |
         dnf install -y lorax curl 
-        dnf install -y 'dnf-command(config-manager)'
-        dnf config-manager --add-repo https://cli.github.com/packages/rpm/gh-cli.repo
-        dnf install -y gh
 
     - name: Download Fedora Everything Installer
       shell: bash

@@ -31,8 +31,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-        with:
-          ref: ${{ inputs.git-tag }}
+        #with:
+        #  ref: ${{ inputs.git-tag }}
 
       - name: Pull Fedora Everything Installer ISO
         run: |

@@ -37,7 +37,7 @@ jobs:
 
       - name: Install Dependencies
         run: |
-          dnf install -y mkksiso
+          dnf install -y lorax
 
       - name: Build ISO
         run: |

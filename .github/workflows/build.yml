@@ -13,15 +13,6 @@ on:
         description: 'Git tag to build'
         required: true
         type: string
-      #cosign-public-key-path:
-      #  description: 'Path to public GPG key'
-      #  required: true
-      #  secret: true
-      #  type: string
-    #secrets:
-    #  cosign-private-key:
-    #    description: 'Cosign private key'
-    #    required: true
 
 env:
   EVERYTHING_INSTALLER_URL: https://download.fedoraproject.org/pub/fedora/linux/releases/${{ inputs.fedora-version }}/Everything/x86_64/iso/Fedora-Everything-netinst-x86_64-${{ inputs.fedora-version }}.iso

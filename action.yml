@@ -1,0 +1,40 @@
+name: Release ISO
+description: 'Builds an ISO bundled with the provided Kickstart configuration'
+
+inputs:
+  image-name:
+    description: 'Name of the image to build'
+    required: true
+  installer-major-version:
+    description: 'Major version of the installer to use'
+    required: true
+  kickstart-file-path:
+    description: 'Path to the kickstart file'
+    required: true
+
+runs:
+  using: composite
+  steps:
+    - name: Install Dependencies
+      shell: bash
+      run: |
+        dnf install -y lorax curl 
+
+    - name: Download Fedora Everything Installer
+      shell: bash
+      run: |
+        curl -L $EVERYTHING_INSTALLER_URL -o Fedora-Everything-netinst-x86_64.iso
+      env:
+        EVERYTHING_INSTALLER_URL: https://download.fedoraproject.org/pub/fedora/linux/releases/${{ inputs.installer-major-version }}/Everything/x86_64/os/images/boot.iso
+
+    - name: Build ISO
+      shell: bash
+      id: build
+      run: |
+        mkksiso --ks ${{ inputs.kickstart-file-path }} Fedora-Everything-netinst-x86_64.iso ${{ inputs.image-name }}.iso
+        echo "ISO_FILENAME=${{ inputs.image-name }}.iso" >> $GITHUB_OUTPUT
+
+outputs:
+  iso-path:
+    description: 'Path to the generated ISO'
+    value: ${{ steps.build.outputs.ISO_FILENAME }}

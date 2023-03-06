@@ -1,25 +1,49 @@
 # isogenerator
-An action to generate custom ISOs of OCI images
+An action to generate custom ISOs of OCI images.
 
-***HELP WANTED***: Inquire within!
+## Usage
 
-## Current Plan
+To use this action, you will need to be using a Fedora based container image.  This is because the action uses `mkksiso` 
+which is only available in Fedora.
 
-This repo is to prototype a github action to generate an ISO for repos in this org.
-We don't want one repo generating a bunch of ISOs, instead what we want is is an action that can be placed in any custom repo that will generate each ISO for that individual repo:
+Example:
 
-The action needs to:
+```yaml
+name: Generate ISO
 
-- Determine when the release-please action is fired off and has completed successfully
-- Grab the [Fedora Everything installer](https://download.fedoraproject.org/pub/fedora/linux/releases/37/Everything/x86_64/iso/Fedora-Everything-netinst-x86_64-37-1.7.iso) or the Fedora IoT installer (tbd)
-- Use the example `ublue.ks` in this repo
-- Execute the following command:
-    - `mkksiso ublue.ks Fedora-Everything-netinst-x86_64-37-1.7.iso ublue.iso`
-    - The ISO's name should be generated so that it matches the image name and our naming convention
-- Sign the iso and generate verification signatures
-- Take the resulting ISO image and signatures and attach it to the release the release-please action just generated. 
+on:
+  release:
+    types: [published]
 
-Note: the `ublue.ks` in this repo is using the current ostree method of kickstarting, but we can do all of this until the feature lands, then we just update the kickstart file, verify it works, then use it in other repos. 
+jobs:
+  build-iso:
+    runs-on: ubuntu-latest
+    container: fedora:latest
+    strategy:
+      matrix:
+        fedora-version: [ 37 ]
+    steps:
+      - uses: actions/checkout@v3
+        
+      - uses: ublue-os/isogenerator@main
+        id: isogenerator
+        with:
+          image-name: example-${{ matrix.fedora-version }}
+          installer-major-version: ${{ matrix.fedora-version }}
+          kickstart-file-path: ublue.ks
+          
+      - uses: actions/upload-artifact@v3
+        with:
+          name: example-${{ matrix.fedora-version }}
+          path: ${{ steps.isogenerator.outputs.iso-path }}
+```
+
+This action expects the following inputs:
+- `image-name`: The name of the ISO to generate.  This does not include the ISO extension.
+- `installer-major-version`: The major version of the Fedora installer to use.  This is usually the same as the image major version.
+- `kickstart-file-path`: The path to the kickstart file to use.
+
+This action will generate an ISO and output the path to the file.
 
 ## Why this method?
 

@@ -34,7 +34,7 @@ runs:
         key: ${{ runner.os }}-${{ inputs.installer-repo }}-${{ inputs.installer-major-version }}-${{ env.CACHE_KEY }}
         restore-keys: ${{ runner.os }}-${{ inputs.installer-repo }}-${{ inputs.installer-major-version }}-${{ env.CACHE_KEY }}
       env:
-        CACHE_KEY: ${{ formatDateTime(now(), 'yyyyMMdd') }}
+        CACHE_KEY: $(date +'%Y-%m-%d')
 
     - name: Download Fedora Everything Installer
       if: steps.restore-cache.outputs.cache-hit != 'true'
@@ -52,7 +52,7 @@ runs:
           Fedora-Everything-netinst-x86_64.iso
         key: ${{ runner.os }}-${{ inputs.installer-repo }}-${{ inputs.installer-major-version }}-${{ env.CACHE_KEY }}
       env:
-        CACHE_KEY: ${{ formatDateTime(now(), 'yyyyMMdd') }}
+        CACHE_KEY: $(date +'%Y-%m-%d')
     
     - name: Build ISO
       shell: bash

@@ -53,7 +53,3 @@ The Fedora installer is in the middle of being rewritten so just using anaconda 
 The ks file is minimal, we'll only use it to point to the custom image for that repo.
 This makes Anaconda ask all the questions it needs but use the custom image for final installation. 
 Flatpaks aren't handled in this case which works out for us. 
-
-## Upstream issues
-
-- https://github.com/rhinstaller/anaconda/pull/4561

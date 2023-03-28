@@ -3,11 +3,12 @@ description: 'Builds an ISO bundled with the provided Kickstart configuration'
 
 inputs:
   image-name:
-    description: 'Name of the image to build'
+    description: 'Name of the image to build.  E.G. "example" will generate the file "example.iso"'
     required: true
   installer-major-version:
     description: 'Major version of the installer to use'
-    required: true
+    required: false
+    default: 38
   installer-repo:
     description: 'Fedora repository to use for the installer'
     required: false
@@ -22,7 +23,18 @@ runs:
     - name: Install Dependencies
       shell: bash
       run: |
-        dnf install -y lorax curl 
+        dnf install -y lorax curl
+
+    - name: Restore installer from cache
+      uses: actions/cache@v3
+      id: restore-cache
+      with:
+        path: |
+          Fedora-Everything-netinst-x86_64.iso
+        key: ${{ runner.os }}-${{ inputs.installer-repo }}-${{ inputs.installer-major-version }}-${{ env.CACHE_KEY }}
+        restore-keys: ${{ runner.os }}-${{ inputs.installer-repo }}-${{ inputs.installer-major-version }}-*
+      env:
+        CACHE_KEY: ${{ formatDateTime(now(), 'yyyyMMdd') }}
 
     - name: Download Fedora Everything Installer
       shell: bash
@@ -31,6 +43,16 @@ runs:
       env:
         EVERYTHING_INSTALLER_URL: https://download.fedoraproject.org/pub/fedora/linux/${{ inputs.installer-repo }}/${{ inputs.installer-major-version }}/Everything/x86_64/os/images/boot.iso
 
+    - name: Save installer to cache
+      if: steps.restore-cache.outputs.cache-hit != 'true'
+      uses: actions/cache@v3
+      with:
+        path: |
+          Fedora-Everything-netinst-x86_64.iso
+        key: ${{ runner.os }}-${{ inputs.installer-repo }}-${{ inputs.installer-major-version }}-${{ env.CACHE_KEY }}
+      env:
+        CACHE_KEY: ${{ formatDateTime(now(), 'yyyyMMdd') }}
+    
     - name: Build ISO
       shell: bash
       id: build

@@ -32,11 +32,12 @@ runs:
         path: |
           Fedora-Everything-netinst-x86_64.iso
         key: ${{ runner.os }}-${{ inputs.installer-repo }}-${{ inputs.installer-major-version }}-${{ env.CACHE_KEY }}
-        restore-keys: ${{ runner.os }}-${{ inputs.installer-repo }}-${{ inputs.installer-major-version }}-*
+        restore-keys: ${{ runner.os }}-${{ inputs.installer-repo }}-${{ inputs.installer-major-version }}-${{ env.CACHE_KEY }}
       env:
         CACHE_KEY: ${{ formatDateTime(now(), 'yyyyMMdd') }}
 
     - name: Download Fedora Everything Installer
+      if: steps.restore-cache.outputs.cache-hit != 'true'
       shell: bash
       run: |
         curl -L $EVERYTHING_INSTALLER_URL -o Fedora-Everything-netinst-x86_64.iso

@@ -38,6 +38,15 @@ runs:
         mkksiso --ks ${{ inputs.kickstart-file-path }} Fedora-Everything-netinst-x86_64.iso ${{ inputs.image-name }}.iso
         echo "ISO_FILENAME=${{ inputs.image-name }}.iso" >> $GITHUB_OUTPUT
 
+sha256:
+    name: sha256
+    runs-on: ubuntu-latest
+    steps:
+      - name: ISO url
+        run: ${{ inputs.image-name }}.iso
+      - name: Create tarball sha256 
+        run: curl -sL ${{ inputs.image-name }}.iso | shasum -a 256 | cut -d " " -f 1
+
 outputs:
   iso-path:
     description: 'Path to the generated ISO'

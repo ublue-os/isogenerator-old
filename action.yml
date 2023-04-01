@@ -45,7 +45,7 @@ sha256:
       - name: ISO url
         run: ${{ inputs.image-name }}.iso
       - name: Create tarball sha256 
-        run: curl -sL ${{ inputs.image-name }}.iso | shasum -a 256 | cut -d " " -f 1
+        run: curl -sL ${{ inputs.image-name }}.iso | sha256sum | awk '{print $1}'
 
 outputs:
   iso-path:

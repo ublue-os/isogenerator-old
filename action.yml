@@ -44,7 +44,7 @@ sha256:
     steps:
       - name: ISO url
         run: ${{ inputs.image-name }}.iso
-      - name: Create tarball sha256 
+      - name: Calculate SHA256 
         run: sha256sum ${{ inputs.image-name }}.iso | awk '{print $1}'
 
 outputs:

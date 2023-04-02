@@ -37,14 +37,10 @@ runs:
       run: |
         mkksiso --ks ${{ inputs.kickstart-file-path }} Fedora-Everything-netinst-x86_64.iso ${{ inputs.image-name }}.iso
         echo "ISO_FILENAME=${{ inputs.image-name }}.iso" >> $GITHUB_OUTPUT
-
-sha256:
-  name: sha256
-  runs-on: ubuntu-latest
-  steps:
-    - name: ISO url
-      run: ${{ inputs.image-name }}.iso
+        
     - name: Calculate SHA256 
+      id: calculate
+      shell: bash
       run: |
         sha256sum ${{ inputs.image-name }}.iso | awk '{print $1}' > ${{ inputs.image-name }}.sha256sum
         echo "SHA256SUM_FILENAME=${{ inputs.image-name }}.sha256sum" >> $GITHUB_OUTPUT
@@ -52,7 +48,7 @@ sha256:
 outputs:
   sha256sum-path:
     description: 'Path to the calculated sha256sum'
-    value: ${{ steps.build.outputs.SHA256SUM_FILENAME }}
+    value: ${{ steps.calculate.outputs.SHA256SUM_FILENAME }}
   iso-path:
     description: 'Path to the generated ISO'
     value: ${{ steps.build.outputs.ISO_FILENAME }}

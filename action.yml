@@ -45,7 +45,9 @@ sha256:
       - name: ISO url
         run: ${{ inputs.image-name }}.iso
       - name: Calculate SHA256 
-        run: sha256sum ${{ inputs.image-name }}.iso | awk '{print $1}' > ${{ inputs.image-name }}.sha256sum
+        run: |
+          sha256sum ${{ inputs.image-name }}.iso | awk '{print $1}' > ${{ inputs.image-name }}.sha256sum
+          echo "SHA256SUM_FILENAME=${{ inputs.image-name }}.sha256sum" >> $GITHUB_OUTPUT
 
 outputs:
   sha256sum-path:

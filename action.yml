@@ -48,6 +48,9 @@ sha256:
         run: sha256sum ${{ inputs.image-name }}.iso | awk '{print $1}' > ${{ inputs.image-name }}.sha256sum
 
 outputs:
+  sha256sum-path:
+    description: 'Path to the calculated sha256sum'
+    value: ${{ steps.build.outputs.SHA256SUM_FILENAME }}
   iso-path:
     description: 'Path to the generated ISO'
     value: ${{ steps.build.outputs.ISO_FILENAME }}

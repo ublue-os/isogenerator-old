@@ -45,7 +45,7 @@ sha256:
       - name: ISO url
         run: ${{ inputs.image-name }}.iso
       - name: Calculate SHA256 
-        run: sha256sum ${{ inputs.image-name }}.iso | awk '{print $1}'
+        run: sha256sum ${{ inputs.image-name }}.iso | awk '{print $1}' > ${{ inputs.image-name }}.sha256sum
 
 outputs:
   iso-path:

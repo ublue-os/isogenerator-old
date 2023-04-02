@@ -39,15 +39,15 @@ runs:
         echo "ISO_FILENAME=${{ inputs.image-name }}.iso" >> $GITHUB_OUTPUT
 
 sha256:
-    name: sha256
-    runs-on: ubuntu-latest
-    steps:
-      - name: ISO url
-        run: ${{ inputs.image-name }}.iso
-      - name: Calculate SHA256 
-        run: |
-          sha256sum ${{ inputs.image-name }}.iso | awk '{print $1}' > ${{ inputs.image-name }}.sha256sum
-          echo "SHA256SUM_FILENAME=${{ inputs.image-name }}.sha256sum" >> $GITHUB_OUTPUT
+  name: sha256
+  runs-on: ubuntu-latest
+  steps:
+    - name: ISO url
+      run: ${{ inputs.image-name }}.iso
+    - name: Calculate SHA256 
+      run: |
+        sha256sum ${{ inputs.image-name }}.iso | awk '{print $1}' > ${{ inputs.image-name }}.sha256sum
+        echo "SHA256SUM_FILENAME=${{ inputs.image-name }}.sha256sum" >> $GITHUB_OUTPUT
 
 outputs:
   sha256sum-path:

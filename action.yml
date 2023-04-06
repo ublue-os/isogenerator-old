@@ -22,7 +22,7 @@ runs:
     - name: Install Dependencies
       shell: bash
       run: |
-        dnf install -y lorax curl 
+        dnf install --disablerepo='*' --enablerepo='fedora,updates' --assumeyes curl grub2-tools xorriso
 
     - name: Download Fedora Everything Installer
       shell: bash
@@ -35,14 +35,15 @@ runs:
       shell: bash
       id: build
       run: |
-        mkksiso --debug --ks ${{ inputs.kickstart-file-path }} Fedora-Everything-netinst-x86_64.iso ${{ inputs.image-name }}.iso 
+        ./generate-installer-media.sh Fedora-Everything-netinst-x86_64.iso ${{ inputs.image-name }}.iso 
         echo "ISO_FILENAME=${{ inputs.image-name }}.iso" >> $GITHUB_OUTPUT
         
     - name: Calculate SHA256 
       id: calculate
       shell: bash
       run: |
-        sha256sum ${{ inputs.image-name }}.iso | awk '{print $1}' > ${{ inputs.image-name }}.sha256sum
+        echo "# ${{ inputs.image-name }}: $(stat -c '%s' ${{ inputs.image-name }}) bytes" > ${{ inputs.image-name }}.sha256sum
+        sha256sum --tag ${{ inputs.image-name }}.iso >> ${{ inputs.image-name }}.sha256sum
         echo "SHA256SUM_FILENAME=${{ inputs.image-name }}.sha256sum" >> $GITHUB_OUTPUT
 
 outputs:

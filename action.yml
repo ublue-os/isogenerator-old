@@ -30,10 +30,12 @@ runs:
         curl -L $EVERYTHING_INSTALLER_URL -o Fedora-Everything-netinst-x86_64.iso
       env:
         EVERYTHING_INSTALLER_URL: https://mirror.fcix.net/fedora/linux/${{ inputs.installer-repo }}/${{ inputs.installer-major-version }}/Everything/x86_64/os/images/boot.iso
-
+    - run: pwd
+      shell: bash
     - name: Build ISO
       shell: bash
       id: build
+      working-directory: /__w/_actions/ublue-os/isogenerator/main/
       run: |
         ./generate-installer-media.sh Fedora-Everything-netinst-x86_64.iso ${{ inputs.image-name }}.iso 
         echo "ISO_FILENAME=${{ inputs.image-name }}.iso" >> $GITHUB_OUTPUT

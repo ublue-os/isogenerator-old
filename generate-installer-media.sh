@@ -41,7 +41,12 @@ for GRUB_CONFIG in ${WORK_DIR}/overlay/{boot/grub2/grub.cfg,EFI/BOOT/{grub.cfg,B
     fi
 done
 
-xorriso -indev "${INPUT_ISO}" -outdev "${ISO_FILE}" -boot_image any replay -map "${WORK_DIR}/overlay" /
+xorriso \
+    -indev "${INPUT_ISO}" \
+    -outdev "${ISO_FILE}" \
+    -boot_image any replay \
+    -boot_image any part_like_isohybrid=on \
+    -map "${WORK_DIR}/overlay" /
 
 implantisomd5 "${ISO_FILE}"
 

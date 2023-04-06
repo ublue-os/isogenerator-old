@@ -44,10 +44,11 @@ runs:
     - name: Calculate SHA256 
       id: calculate
       shell: bash
+      working-directory: /__w/_actions/bigpod98/isogenerator/main/
       run: |
         echo "# ${{ inputs.image-name }}: $(stat -c '%s' ${{ inputs.image-name }}.iso) bytes" > ${{ inputs.image-name }}.sha256sum
         sha256sum --tag ${{ inputs.image-name }}.iso >> ${{ inputs.image-name }}.sha256sum
-        echo "SHA256SUM_FILENAME=${{ inputs.image-name }}.sha256sum" >> $GITHUB_OUTPUT
+        echo "SHA256SUM_FILENAME=/__w/_actions/bigpod98/isogenerator/main/${{ inputs.image-name }}.sha256sum" >> $GITHUB_OUTPUT
 
 outputs:
   sha256sum-path:

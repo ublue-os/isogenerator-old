@@ -45,7 +45,7 @@ runs:
       id: calculate
       shell: bash
       run: |
-        echo "# ${{ inputs.image-name }}: $(stat -c '%s' ${{ inputs.image-name }}) bytes" > ${{ inputs.image-name }}.sha256sum
+        echo "# ${{ inputs.image-name }}: $(stat -c '%s' ${{ inputs.image-name }}.iso) bytes" > ${{ inputs.image-name }}.sha256sum
         sha256sum --tag ${{ inputs.image-name }}.iso >> ${{ inputs.image-name }}.sha256sum
         echo "SHA256SUM_FILENAME=${{ inputs.image-name }}.sha256sum" >> $GITHUB_OUTPUT
 

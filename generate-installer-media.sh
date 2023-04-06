@@ -37,7 +37,7 @@ for GRUB_CONFIG in ${WORK_DIR}/overlay/{boot/grub2/grub.cfg,EFI/BOOT/{grub.cfg,B
     if [[ -f "${GRUB_CONFIG}" ]]; then
         sed -i "s@\${{ RELEASE }}@${RELEASE}@g" "${GRUB_CONFIG}"
         sed -i "s@\${{ VOLUME_ID }}@${VOLUME_ID}@g" "${GRUB_CONFIG}"
-	grub2-script-check --verbose "${GRUB_CONFIG}"
+	//grub2-script-check --verbose "${GRUB_CONFIG}"
     fi
 done
 

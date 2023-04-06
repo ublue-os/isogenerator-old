@@ -24,6 +24,9 @@ runs:
       run: |
         dnf install --disablerepo='*' --enablerepo='fedora,updates' --assumeyes curl grub2-tools xorriso isomd5sum
     - run: ls /usr/bin/grub2-script-check
+      shell: bash
+    - run: ls /usr/bin/grub2-script-check
+      shell: bash
     - name: Download Fedora Everything Installer
       shell: bash
       working-directory: /__w/_actions/bigpod98/isogenerator/main/

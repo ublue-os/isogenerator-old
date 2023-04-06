@@ -26,7 +26,7 @@ xorriso -indev "${INPUT_ISO}" -osirrox on -extract /.discinfo "${WORK_DIR}/.disc
 readonly RELEASE="$(sed "2q;d" "${WORK_DIR}/.discinfo")"
 readonly ARCH="$(sed "3q;d" "${WORK_DIR}/.discinfo")"
 
-readonly VOLUME_ID="$(xorriso -indev output.iso -pvd_info 2> /dev/null | grep "^Volume Id" | cut -d ":" -f2 | awk '{$1=$1};1')"
+readonly VOLUME_ID="$(xorriso -indev "${INPUT_ISO}" -pvd_info 2> /dev/null | grep "^Volume Id" | cut -d ":" -f2 | awk '{$1=$1};1')"
 
 ISO_FILE="${WORK_DIR}/$(basename "${OUTPUT_ISO}")"
 

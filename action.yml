@@ -37,6 +37,7 @@ runs:
       id: build
       working-directory: /__w/_actions/bigpod98/isogenerator/main/
       run: |
+        pwd
         ./generate-installer-media.sh Fedora-Everything-netinst-x86_64.iso ${{ inputs.image-name }}.iso 
         echo "ISO_FILENAME=/__w/_actions/bigpod98/isogenerator/main/${{ inputs.image-name }}.iso" >> $GITHUB_OUTPUT
         

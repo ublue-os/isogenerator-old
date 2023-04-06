@@ -22,7 +22,7 @@ runs:
     - name: Install Dependencies
       shell: bash
       run: |
-        dnf install --disablerepo='*' --enablerepo='fedora,updates' --assumeyes curl xorriso isomd5sum
+        dnf install --disablerepo='*' --enablerepo='fedora,updates' --setopt install_weak_deps=0 --assumeyes curl xorriso isomd5sum
         
     - name: Download Fedora Everything Installer
       shell: bash

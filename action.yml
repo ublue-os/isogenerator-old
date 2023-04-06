@@ -22,29 +22,32 @@ runs:
     - name: Install Dependencies
       shell: bash
       run: |
-        dnf install --disablerepo='*' --enablerepo='fedora,updates' --assumeyes curl grub2-tools xorriso
-
+        dnf install --disablerepo='*' --enablerepo='fedora,updates' --setopt install_weak_deps=0 --assumeyes curl xorriso isomd5sum
+        
     - name: Download Fedora Everything Installer
       shell: bash
+      working-directory: /__w/_actions/ublue-os/isogenerator/main/
       run: |
         curl -L $EVERYTHING_INSTALLER_URL -o Fedora-Everything-netinst-x86_64.iso
       env:
         EVERYTHING_INSTALLER_URL: https://mirror.fcix.net/fedora/linux/${{ inputs.installer-repo }}/${{ inputs.installer-major-version }}/Everything/x86_64/os/images/boot.iso
-
+        
     - name: Build ISO
       shell: bash
       id: build
+      working-directory: /__w/_actions/ublue-os/isogenerator/main/
       run: |
         ./generate-installer-media.sh Fedora-Everything-netinst-x86_64.iso ${{ inputs.image-name }}.iso 
-        echo "ISO_FILENAME=${{ inputs.image-name }}.iso" >> $GITHUB_OUTPUT
+        echo "ISO_FILENAME=/__w/_actions/ublue-os/isogenerator/main/${{ inputs.image-name }}.iso" >> $GITHUB_OUTPUT
         
     - name: Calculate SHA256 
       id: calculate
       shell: bash
+      working-directory: /__w/_actions/ublue-os/isogenerator/main/
       run: |
-        echo "# ${{ inputs.image-name }}: $(stat -c '%s' ${{ inputs.image-name }}) bytes" > ${{ inputs.image-name }}.sha256sum
+        echo "# ${{ inputs.image-name }}: $(stat -c '%s' ${{ inputs.image-name }}.iso) bytes" > ${{ inputs.image-name }}.sha256sum
         sha256sum --tag ${{ inputs.image-name }}.iso >> ${{ inputs.image-name }}.sha256sum
-        echo "SHA256SUM_FILENAME=${{ inputs.image-name }}.sha256sum" >> $GITHUB_OUTPUT
+        echo "SHA256SUM_FILENAME=/__w/_actions/ublue-os/isogenerator/main/${{ inputs.image-name }}.sha256sum" >> $GITHUB_OUTPUT
 
 outputs:
   sha256sum-path:

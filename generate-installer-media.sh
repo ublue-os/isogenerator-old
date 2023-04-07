@@ -37,18 +37,12 @@ for GRUB_CONFIG in ${WORK_DIR}/overlay/{boot/grub2/grub.cfg,EFI/BOOT/{grub.cfg,B
     if [[ -f "${GRUB_CONFIG}" ]]; then
         sed -i "s@\${{ RELEASE }}@${RELEASE}@g" "${GRUB_CONFIG}"
         sed -i "s@\${{ VOLUME_ID }}@${VOLUME_ID}@g" "${GRUB_CONFIG}"
-	#/usr/bin/grub2-script-check --verbose "${GRUB_CONFIG}"
     fi
 done
 
-xorriso \
-    -indev "${INPUT_ISO}" \
-    -outdev "${ISO_FILE}" \
-    -boot_image any replay \
-    -boot_image any part_like_isohybrid=on \
-    -map "${WORK_DIR}/overlay" /
+EXTRA_ARGS="$(find ${WORK_DIR}/overlay -mindepth 1 -maxdepth 1 -printf "--add %p ")"
 
-implantisomd5 "${ISO_FILE}"
+mkksiso --debug ${EXTRA_ARGS} "${INPUT_ISO}" "${ISO_FILE}"
 
 mv "${ISO_FILE}" "${OUTPUT_ISO}"
 

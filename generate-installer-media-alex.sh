@@ -1,6 +1,6 @@
 #!/bin/sh
 
-export PS4='+${LINENO}:'
+export PS4='+ ${FUNCNAME[0]:-main}:${LINENO}> '
 set -ouex pipefail
 
 # Global state, please keep to a minimum
@@ -124,15 +124,23 @@ mkesp() {
 
 generate_bootable_iso() {
     #XORRISO_REPLAY_FLAGS=($(xorriso -indev "${INPUT_ISO}" -report_el_torito cmd))
-    XORRISO_CLEAN_FLAGS=(
-        $(xorriso -indev "${INPUT_ISO}" -report_el_torito cmd \
-            | awk '!/append_partition/ && !/efi_path/' | sed 's/^-//' | tee el_torito.log)
-    )
-    echo "map ${WORK_DIR}/overlay /" >> el_torito.log
-    echo "append_partition 2 C12A7328-F81F-11D2-BA4B-00A0C93EC93B ${ESP_IMG}" >> el_torito.log
-    #echo "boot_image any efi_boot_part=${ESP_IMG}" >> el_torito.log
+    cat > el_torito.log <<EOF
+stdio_sync off
+padding 0
+EOF
 
-    echo "after cleaning we have ${#XORRISO_CLEAN_FLAGS[@]} flags"
+    xorriso -indev "${INPUT_ISO}" -report_el_torito cmd \
+        | awk '!/append_partition/ && !/efi_path/' \
+        | sed 's/^-//' \
+        | tee -a el_torito.log
+
+    cat >> el_torito.log <<EOF
+padding 0
+map ${WORK_DIR}/overlay /
+boot_image isolinux partition_entry=gpt_basdat
+append_partition 2 C12A7328-F81F-11D2-BA4B-00A0C93EC93B ${ESP_IMG}
+boot_image any efi_path=/images/eltorito.img
+EOF
 
     xorriso \
         -indev "${INPUT_ISO}" \

@@ -87,7 +87,7 @@ get_esp_offset() {
     IMG_FILE="$1"
     parted --json --script "${IMG_FILE}" \
         unit b \
-        print list \
+        print \
         | jq --raw-output '
             .disk.partitions[] 
             | select(.number == 2)
@@ -98,7 +98,7 @@ get_esp_size() {
     IMG_FILE="$1"
     parted --json --script "${IMG_FILE}" \
         unit b \
-        print list \
+        print \
         | jq --raw-output '
             .disk.partitions[] 
             | select(.number == 2)

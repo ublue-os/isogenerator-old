@@ -1,1 +1,4 @@
 .idea
+el_torito.log
+*.iso
+*.sha256sum

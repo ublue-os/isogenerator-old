@@ -56,6 +56,7 @@ patch_grub_cfg() {
     for GRUB_CFG in "${EFI_GRUB_CFG_FILES[@]}"; do
         ansible -m template \
             --become \
+            -e @boot_menu.yml \
             -e "VOLUME_ID=${VOLUME_ID}" \
             -e "RELEASE=${RELEASE}" \
             -a "src=${SCRIPT_DIR}/installer/overlay/${ARCH}/${GRUB_CFG}
@@ -68,6 +69,7 @@ patch_grub_cfg() {
     )
     for GRUB_CFG in "${MBR_GRUB_CFG_FILES[@]}"; do
         ansible -m template \
+            -e @boot_menu.yml \
             -e "VOLUME_ID=${VOLUME_ID}" \
             -e "RELEASE=${RELEASE}" \
             -a "src=${SCRIPT_DIR}/installer/overlay/${ARCH}/${GRUB_CFG}

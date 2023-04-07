@@ -1,0 +1,21 @@
+ublue_variants:
+  - label: ublue-os/main
+    ks: /kickstart/ublue-os.ks
+    flavors:
+      - label: silverblue-main
+      - label: kinoite-main
+      - label: vauxite-main
+      - label: sericea-main
+      - label: lxqt-main
+      - label: mate-main
+      - label: base-main
+  - label: ublue-os/nvidia
+    ks: /kickstart/ublue-nvidia.ks
+    flavors:
+      - label: silverblue-nvidia
+      - label: kinoite-nvidia
+      - label: vauxite-nvidia
+      - label: sericea-nvidia
+      - label: lxqt-nvidia
+      - label: mate-nvidia
+      - label: base-nvidia

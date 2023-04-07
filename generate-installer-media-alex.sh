@@ -139,7 +139,7 @@ padding 0
 map ${WORK_DIR}/overlay /
 boot_image isolinux partition_entry=gpt_basdat
 append_partition 2 C12A7328-F81F-11D2-BA4B-00A0C93EC93B ${ESP_IMG}
-boot_image any efi_path=/images/eltorito.img
+boot_image any efi_path=--interval:appended_partition_2:all::
 EOF
 
     xorriso \

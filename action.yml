@@ -32,6 +32,7 @@ runs:
           isomd5sum \
           jq \
           parted \
+          tree \
           xorriso
         
     - name: Download Fedora Everything Installer

@@ -1,6 +1,6 @@
 #!/bin/sh
 
-export PS4='+ ${FUNCNAME[0]:-main}:${LINENO}> '
+export PS4='+ \[\033[38;5;1m\]${FUNCNAME[0]:-isopatch}\[$(tput sgr0)\]:\[\033[38;5;22m\]${LINENO}\[$(tput sgr0)\]:> '
 set -ouex pipefail
 
 # Global state, please keep to a minimum
@@ -12,8 +12,8 @@ if [[ ! "${WORK_DIR}" || ! -d "${WORK_DIR}" ]]; then
 fi
 
 cleanup() {      
-  sudo umount "${WORK_DIR}/overlay/EFI" || true
-  #rm -rf "${WORK_DIR}"
+    sudo umount "${WORK_DIR}/overlay/EFI" || true
+    rm -rf "${WORK_DIR}"
 }
 trap cleanup EXIT ERR
 
@@ -37,7 +37,7 @@ main() {
     # Prepare overlay
     readonly EFI_ROOT="${WORK_DIR}/overlay/EFI"
     sudo mkdir -p "${EFI_ROOT}/EFI/BOOT"
-    sudo mkdir -p "${WORK_DIR}/overlay/boot/grub2"
+    mkdir -p "${WORK_DIR}/overlay/boot/grub2"
 
     patch_grub_cfg 
     generate_ks
@@ -68,7 +68,6 @@ patch_grub_cfg() {
     )
     for GRUB_CFG in "${MBR_GRUB_CFG_FILES[@]}"; do
         ansible -m template \
-            --become \
             -e "VOLUME_ID=${VOLUME_ID}" \
             -e "RELEASE=${RELEASE}" \
             -a "src=${SCRIPT_DIR}/installer/overlay/${ARCH}/${GRUB_CFG}
@@ -78,10 +77,8 @@ patch_grub_cfg() {
 }
 
 generate_ks() {
-    sudo cp -rv "${SCRIPT_DIR}/installer/ks.cfg" "${WORK_DIR}/overlay"
-    sudo cp -rv "${SCRIPT_DIR}/installer/kickstart" "${WORK_DIR}/overlay"
+    cp -rv "${SCRIPT_DIR}/installer/kickstart" "${WORK_DIR}/overlay"
     sudo cp -rv "${SCRIPT_DIR}/installer/kickstart" "${EFI_ROOT}/kickstart"
-    sudo cp -rv "${SCRIPT_DIR}/installer/ks.cfg" "${EFI_ROOT}"
 }
 
 get_esp_offset() {
@@ -123,24 +120,25 @@ mkesp() {
 }
 
 generate_bootable_iso() {
-    #XORRISO_REPLAY_FLAGS=($(xorriso -indev "${INPUT_ISO}" -report_el_torito cmd))
-    cat > el_torito.log <<EOF
+
+    {
+        cat <<EOF
 stdio_sync off
 padding 0
 EOF
 
-    xorriso -indev "${INPUT_ISO}" -report_el_torito cmd \
-        | awk '!/append_partition/ && !/efi_path/' \
-        | sed 's/^-//' \
-        | tee -a el_torito.log
+        xorriso -indev "${INPUT_ISO}" -report_el_torito cmd \
+            | awk '!/append_partition/ && !/efi_path/' \
+            | sed 's/^-//'
 
-    cat >> el_torito.log <<EOF
+        cat <<EOF
 padding 0
 map ${WORK_DIR}/overlay /
 boot_image isolinux partition_entry=gpt_basdat
 append_partition 2 C12A7328-F81F-11D2-BA4B-00A0C93EC93B ${ESP_IMG}
 boot_image any efi_path=--interval:appended_partition_2:all::
 EOF
+    } | tee el_torito.log
 
     xorriso \
         -indev "${INPUT_ISO}" \
@@ -149,6 +147,8 @@ EOF
 
     implantisomd5 "${OUTPUT_ISO}"
     echo "Created ISO: ${OUTPUT_ISO}"
+
+    sha256sum --tag "${OUTPUT_ISO}" | tee "${OUTPUT_ISO}.sha256sum"
 }
 
 main "$@"

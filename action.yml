@@ -31,6 +31,7 @@ runs:
           curl \
           isomd5sum \
           jq \
+          parted \
           xorriso
         
     - name: Download Fedora Everything Installer

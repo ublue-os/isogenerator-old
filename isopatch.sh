@@ -1,6 +1,6 @@
 #!/bin/sh
 
-export PS4='+ \[\033[38;5;1m\]${FUNCNAME[0]:-isopatch}\[$(tput sgr0)\]:\[\033[38;5;22m\]${LINENO}\[$(tput sgr0)\]:> '
+export PS4='+ ${FUNCNAME[0]:-isopatch}:${LINENO}:> '
 set -ouex pipefail
 
 # Global state, please keep to a minimum

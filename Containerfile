@@ -10,5 +10,6 @@ RUN dnf install \
         isomd5sum \
         jq \
         parted \
+        ShellCheck \
         tree \
         xorriso

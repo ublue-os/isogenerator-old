@@ -1,10 +1,12 @@
-#!/bin/sh
+#!/bin/bash
 
 export PS4='+ ${FUNCNAME[0]:-isopatch}:${LINENO}:> '
 set -ouex pipefail
 
 # Global state, please keep to a minimum
+# shellcheck disable=SC2155
 readonly SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+# shellcheck disable=SC2155
 readonly WORK_DIR="$(mktemp -d -p "$SCRIPT_DIR")"
 if [[ ! "${WORK_DIR}" || ! -d "${WORK_DIR}" ]]; then
   echo "Could not create temp dir"
@@ -19,22 +21,29 @@ trap cleanup EXIT ERR
 
 # Main Function for the script
 main() {
+    # shellcheck disable=SC2155
     readonly INPUT_ISO="$1"
+    # shellcheck disable=SC2155
     readonly OUTPUT_ISO="${SCRIPT_DIR}/$(basename "${2:-output.iso}")"
 
     # ISO release version and architecture are embedded in .discinfo
     xorriso -indev "${INPUT_ISO}" -osirrox on -extract /.discinfo "${WORK_DIR}/.discinfo"
 
+    # shellcheck disable=SC2155
     readonly RELEASE="$(sed "2q;d" "${WORK_DIR}/.discinfo")"
+    # shellcheck disable=SC2155
     readonly ARCH="$(sed "3q;d" "${WORK_DIR}/.discinfo")"
+    # shellcheck disable=SC2155
     readonly VOLUME_ID="$(xorriso -indev "${INPUT_ISO}" -pvd_info 2> /dev/null | awk '/^Volume Id/{print $NF}')"
 
     # Splice ESP.img from Original ISO
-    ESP_IMG="$(mkesp "${INPUT_ISO}")"
+    # shellcheck disable=SC2155
+    readonly ESP_IMG="$(mkesp "${INPUT_ISO}")"
     mkdir -p "${WORK_DIR}/overlay/EFI"
     sudo mount -o loop "${ESP_IMG}" "${WORK_DIR}/overlay/EFI"
 
     # Prepare overlay
+    # shellcheck disable=SC2155
     readonly EFI_ROOT="${WORK_DIR}/overlay/EFI"
     sudo mkdir -p "${EFI_ROOT}/EFI/BOOT"
     mkdir -p "${WORK_DIR}/overlay/boot/grub2"

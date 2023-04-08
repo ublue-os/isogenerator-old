@@ -1,0 +1,31 @@
+name: shellcheck-isopatch
+on:
+  pull_request:
+    branches:
+      - main
+    paths-ignore:
+      - '**.md'
+      - '**.txt'
+  push:
+    paths-ignore:
+      - '**.md'
+      - '**.txt'
+
+jobs:
+  shellcheck:
+    name: run shellcheck to verify isopatch.sh
+    runs-on: ubuntu-22.04
+    steps:
+      # Checkout push-to-registry action GitHub repository
+      - name: Checkout Push to Registry action
+        uses: actions/checkout@v3
+
+      - name: Buildah Action
+        uses: redhat-actions/buildah-build@v2
+        with:
+          image: isogenerator
+          tags: builder
+          containerfiles: |
+            ./Containerfile
+      - name: run shellcheck
+        run: ./util/shellcheck isopatch.sh

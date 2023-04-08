@@ -15,7 +15,7 @@ fi
 
 cleanup() {      
     sudo umount "${WORK_DIR}/overlay/EFI" || true
-    rm -rf "${WORK_DIR}"
+    #rm -rf "${WORK_DIR}"
 }
 trap cleanup EXIT ERR
 
@@ -39,14 +39,9 @@ main() {
     # Splice ESP.img from Original ISO
     # shellcheck disable=SC2155
     readonly ESP_IMG="$(mkesp "${INPUT_ISO}")"
-    mkdir -p "${WORK_DIR}/overlay/EFI"
-    sudo mount -o loop "${ESP_IMG}" "${WORK_DIR}/overlay/EFI"
 
     # Prepare overlay
     # shellcheck disable=SC2155
-    readonly EFI_ROOT="${WORK_DIR}/overlay/EFI"
-    sudo mkdir -p "${EFI_ROOT}/EFI/BOOT"
-    mkdir -p "${WORK_DIR}/overlay/boot/grub2"
 
     patch_grub_cfg 
     generate_ks
@@ -60,6 +55,25 @@ patch_grub_cfg() {
         EFI/BOOT/grub.cfg
         EFI/BOOT/BOOT.conf
     )
+
+    readonly EFI_ROOT="${WORK_DIR}/overlay/EFI"
+    mkdir -p "${WORK_DIR}/overlay/boot/grub2"
+    mkdir -p "${WORK_DIR}/overlay/EFI"
+    mkdir -p "${EFI_ROOT}/EFI/BOOT"
+
+    tree "${WORK_DIR}"
+    for GRUB_CFG in "${EFI_GRUB_CFG_FILES[@]}"; do
+        ansible -m template \
+            -e @boot_menu.yml \
+            -e "VOLUME_ID=${VOLUME_ID}" \
+            -e "RELEASE=${RELEASE}" \
+            -a "src=${SCRIPT_DIR}/installer/overlay/${ARCH}/${GRUB_CFG}
+                dest=${EFI_ROOT}/${GRUB_CFG}" \
+            localhost
+    done
+
+    sudo mount -o loop "${ESP_IMG}" "${WORK_DIR}/overlay/EFI"
+    sudo mkdir -p "${EFI_ROOT}/EFI/BOOT"
 
     tree "${WORK_DIR}"
     for GRUB_CFG in "${EFI_GRUB_CFG_FILES[@]}"; do

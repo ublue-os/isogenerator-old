@@ -59,3 +59,8 @@ jobs:
       - name: run isopatch.sh
         run: |
           ./isopatch.sh Fedora-Everything-netinst-x86_64.iso ublue-test.iso
+
+      - uses: actions/upload-artifact@v3
+        with:
+          name: ublue-test.iso
+          path: ublue-test.iso

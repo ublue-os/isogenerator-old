@@ -15,7 +15,7 @@ fi
 
 cleanup() {      
     sudo umount "${WORK_DIR}/overlay/EFI" || true
-    #rm -rf "${WORK_DIR}"
+    rm -rf "${WORK_DIR}"
 }
 trap cleanup EXIT ERR
 

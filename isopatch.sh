@@ -58,7 +58,7 @@ patch_grub_cfg() {
 
     readonly EFI_ROOT="${WORK_DIR}/overlay/EFI"
     mkdir -p "${WORK_DIR}/overlay/boot/grub2"
-    mkdir -p "${WORK_DIR}/overlay/EFI"
+    mkdir -p "${WORK_DIR}/overlay/EFI/BOOT"
     mkdir -p "${EFI_ROOT}/EFI/BOOT"
 
     tree "${WORK_DIR}"
@@ -68,7 +68,7 @@ patch_grub_cfg() {
             -e "VOLUME_ID=${VOLUME_ID}" \
             -e "RELEASE=${RELEASE}" \
             -a "src=${SCRIPT_DIR}/installer/overlay/${ARCH}/${GRUB_CFG}
-                dest=${EFI_ROOT}/${GRUB_CFG}" \
+                dest=${WORK_DIR}/overlay/${GRUB_CFG}" \
             localhost
     done
 

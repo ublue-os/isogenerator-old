@@ -35,6 +35,7 @@ jobs:
     runs-on: ubuntu-22.04
     container:
       image: fedora:38
+      options: --privileged
     steps:
       # Checkout push-to-registry action GitHub repository
       - name: Checkout Push to Registry action

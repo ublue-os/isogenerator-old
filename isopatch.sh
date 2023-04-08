@@ -1,10 +1,12 @@
-#!/bin/sh
+#!/bin/bash
 
-export PS4='+ ${FUNCNAME[0]:-isopatch}:${LINENO}:> '
+export PS4='+ \e[31m${FUNCNAME[0]:-isopatch}\e[39m:\e[97m${LINENO}\e[39m:> '
 set -ouex pipefail
 
 # Global state, please keep to a minimum
+# shellcheck disable=SC2155
 readonly SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+# shellcheck disable=SC2155
 readonly WORK_DIR="$(mktemp -d -p "$SCRIPT_DIR")"
 if [[ ! "${WORK_DIR}" || ! -d "${WORK_DIR}" ]]; then
   echo "Could not create temp dir"
@@ -19,25 +21,27 @@ trap cleanup EXIT ERR
 
 # Main Function for the script
 main() {
+    # shellcheck disable=SC2155
     readonly INPUT_ISO="$1"
+    # shellcheck disable=SC2155
     readonly OUTPUT_ISO="${SCRIPT_DIR}/$(basename "${2:-output.iso}")"
 
     # ISO release version and architecture are embedded in .discinfo
     xorriso -indev "${INPUT_ISO}" -osirrox on -extract /.discinfo "${WORK_DIR}/.discinfo"
 
+    # shellcheck disable=SC2155
     readonly RELEASE="$(sed "2q;d" "${WORK_DIR}/.discinfo")"
+    # shellcheck disable=SC2155
     readonly ARCH="$(sed "3q;d" "${WORK_DIR}/.discinfo")"
+    # shellcheck disable=SC2155
     readonly VOLUME_ID="$(xorriso -indev "${INPUT_ISO}" -pvd_info 2> /dev/null | awk '/^Volume Id/{print $NF}')"
 
     # Splice ESP.img from Original ISO
-    ESP_IMG="$(mkesp "${INPUT_ISO}")"
-    mkdir -p "${WORK_DIR}/overlay/EFI"
-    sudo mount -o loop "${ESP_IMG}" "${WORK_DIR}/overlay/EFI"
+    # shellcheck disable=SC2155
+    readonly ESP_IMG="$(mkesp "${INPUT_ISO}")"
 
     # Prepare overlay
-    readonly EFI_ROOT="${WORK_DIR}/overlay/EFI"
-    sudo mkdir -p "${EFI_ROOT}/EFI/BOOT"
-    mkdir -p "${WORK_DIR}/overlay/boot/grub2"
+    # shellcheck disable=SC2155
 
     patch_grub_cfg 
     generate_ks
@@ -51,6 +55,25 @@ patch_grub_cfg() {
         EFI/BOOT/grub.cfg
         EFI/BOOT/BOOT.conf
     )
+
+    readonly EFI_ROOT="${WORK_DIR}/overlay/EFI"
+    mkdir -p "${WORK_DIR}/overlay/boot/grub2"
+    mkdir -p "${WORK_DIR}/overlay/EFI/BOOT"
+    mkdir -p "${EFI_ROOT}/EFI/BOOT"
+
+    tree "${WORK_DIR}"
+    for GRUB_CFG in "${EFI_GRUB_CFG_FILES[@]}"; do
+        ansible -m template \
+            -e @boot_menu.yml \
+            -e "VOLUME_ID=${VOLUME_ID}" \
+            -e "RELEASE=${RELEASE}" \
+            -a "src=${SCRIPT_DIR}/installer/overlay/${ARCH}/${GRUB_CFG}
+                dest=${WORK_DIR}/overlay/${GRUB_CFG}" \
+            localhost
+    done
+
+    sudo mount -o loop "${ESP_IMG}" "${WORK_DIR}/overlay/EFI"
+    sudo mkdir -p "${EFI_ROOT}/EFI/BOOT"
 
     tree "${WORK_DIR}"
     for GRUB_CFG in "${EFI_GRUB_CFG_FILES[@]}"; do

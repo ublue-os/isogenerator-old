@@ -1,0 +1,8 @@
+ansible
+curl
+isomd5sum
+jq
+parted
+ShellCheck
+tree
+xorriso

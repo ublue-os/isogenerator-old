@@ -1,6 +1,6 @@
 #!/bin/bash
 
-export PS4='+ ${FUNCNAME[0]:-isopatch}:${LINENO}:> '
+export PS4='+ \e[31m${FUNCNAME[0]:-isopatch}\e[39m:\e[97m${LINENO}\e[39m:> '
 set -ouex pipefail
 
 # Global state, please keep to a minimum

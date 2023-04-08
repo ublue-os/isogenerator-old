@@ -11,6 +11,8 @@ ublue_variants:
       - label: base-main
   - label: ublue-os/nvidia
     ks: /kickstart/ublue-os-nvidia.ks
+    nvidia_releases:
+      - 470
     flavors:
       - label: silverblue-nvidia
       - label: kinoite-nvidia

@@ -4,11 +4,14 @@ An action to generate custom ISOs of OCI images.
 ## Usage
 
 To use this action, you will need to be using a Fedora based container image.  This is because the action uses `mkksiso` 
-which is only available in Fedora.
+which is only available in Fedora. In order to publish ISOs as part of the release process you can add it to the end of your release-please action: 
 
 Example:
 
 ```yaml
+  release-please:
+  id: release-please
+  ... 
   build-iso:
     name: Generate and Release ISOs
     runs-on: ubuntu-latest

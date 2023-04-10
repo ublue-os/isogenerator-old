@@ -9,10 +9,13 @@ ublue_variants:
       - label: lxqt-main
       - label: mate-main
       - label: base-main
+        info: no DE
   - label: ublue-os/nvidia
     ks: /kickstart/ublue-os-nvidia.ks
-    nvidia_releases:
-      - 470
+    subvariants:
+      - label: latest driver
+      - label: 470xx driver
+        suffix: -470
     flavors:
       - label: silverblue-nvidia
       - label: kinoite-nvidia
@@ -21,3 +24,4 @@ ublue_variants:
       - label: lxqt-nvidia
       - label: mate-nvidia
       - label: base-nvidia
+        info: no DE

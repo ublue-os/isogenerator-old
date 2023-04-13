@@ -25,3 +25,7 @@ ublue_variants:
       - label: mate-nvidia
       - label: base-nvidia
         info: no DE
+  - label: ublue-os/bluefin
+    ks: /kickstart/ublue-os-bluefin.ks
+    flavors:
+      - label: main

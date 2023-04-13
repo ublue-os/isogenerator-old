@@ -15,7 +15,7 @@ fi
 
 cleanup() {      
     sudo umount "${WORK_DIR}/overlay/EFI" || true
-    rm -rf "${WORK_DIR}"
+    sudo rm -rf "${WORK_DIR}"
 }
 trap cleanup EXIT ERR
 
@@ -45,7 +45,10 @@ main() {
 
     patch_grub_cfg 
     generate_ks
-
+    copy_secure_boot_keys
+    # Some overlayed files will have a different UID and GID from the ones that
+    # already came on the source ISO unless setting to root
+    sudo chown 0:0 -R "${ESP_IMG}" "${WORK_DIR}/overlay"
     sudo umount "${ESP_IMG}"
     generate_bootable_iso
 }
@@ -106,6 +109,11 @@ patch_grub_cfg() {
 generate_ks() {
     cp -rv "${SCRIPT_DIR}/installer/kickstart" "${WORK_DIR}/overlay"
     sudo cp -rv "${SCRIPT_DIR}/installer/kickstart" "${EFI_ROOT}/kickstart"
+}
+
+copy_secure_boot_keys() {
+    cp -v "${SCRIPT_DIR}"/installer/securebootkeys/*.der "${WORK_DIR}/overlay"
+    sudo cp -v "${SCRIPT_DIR}"/installer/securebootkeys/*.der "${EFI_ROOT}"
 }
 
 get_esp_offset() {

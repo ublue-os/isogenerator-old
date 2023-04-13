@@ -5,6 +5,8 @@ set -ouex pipefail
 
 # Global state, please keep to a minimum
 # shellcheck disable=SC2155
+readonly BOOT_MENU_PATH="${BOOT_MENU_PATH:-boot_menu.yml}"
+# shellcheck disable=SC2155
 readonly SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 # shellcheck disable=SC2155
 readonly WORK_DIR="$(mktemp -d -p "$SCRIPT_DIR")"
@@ -66,7 +68,7 @@ patch_grub_cfg() {
     tree "${WORK_DIR}"
     for GRUB_CFG in "${EFI_GRUB_CFG_FILES[@]}"; do
         ansible -m template \
-            -e @boot_menu.yml \
+            -e @"${BOOT_MENU_PATH}" \
             -e "BOOT_TYPE=efi" \
             -e "VOLUME_ID=${VOLUME_ID}" \
             -e "RELEASE=${RELEASE}" \
@@ -82,7 +84,7 @@ patch_grub_cfg() {
     for GRUB_CFG in "${EFI_GRUB_CFG_FILES[@]}"; do
         ansible -m template \
             --become \
-            -e @boot_menu.yml \
+            -e @"${BOOT_MENU_PATH}" \
             -e "BOOT_TYPE=efi" \
             -e "VOLUME_ID=${VOLUME_ID}" \
             -e "RELEASE=${RELEASE}" \
@@ -96,7 +98,7 @@ patch_grub_cfg() {
     )
     for GRUB_CFG in "${MBR_GRUB_CFG_FILES[@]}"; do
         ansible -m template \
-            -e @boot_menu.yml \
+            -e @"${BOOT_MENU_PATH}" \
             -e "BOOT_TYPE=mbr" \
             -e "VOLUME_ID=${VOLUME_ID}" \
             -e "RELEASE=${RELEASE}" \

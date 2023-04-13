@@ -4,44 +4,53 @@ An action to generate custom ISOs of OCI images.
 ## Usage
 
 To use this action, you will need to be using a Fedora based container image.  This is because the action uses `mkksiso` 
-which is only available in Fedora.
+which is only available in Fedora. In order to publish ISOs as part of the release process you can add it to the end of your release-please action: 
 
 Example:
 
 ```yaml
-name: Generate ISO
-
-on:
-  release:
-    types: [published]
-
-jobs:
+  release-please:
+  id: release-please
+  ... 
   build-iso:
+    name: Generate and Release ISOs
     runs-on: ubuntu-latest
-    container: fedora:latest
-    strategy:
-      matrix:
-        fedora-version: [ 37 ]
+    needs: release-please
+    if: needs.release-please.outputs.releases_created
+    container: 
+      image: fedora:38
+      options: --privileged
     steps:
       - uses: actions/checkout@v3
-        
-      - uses: ublue-os/isogenerator@main
+      - name: Generate ISO  
+        uses: ublue-os/isogenerator@main
         id: isogenerator
         with:
-          image-name: example-${{ matrix.fedora-version }}
-          installer-major-version: ${{ matrix.fedora-version }}
-          kickstart-file-path: ublue.ks
-          
-      - uses: actions/upload-artifact@v3
-        with:
-          name: example-${{ matrix.fedora-version }}
-          path: ${{ steps.isogenerator.outputs.iso-path }}
+          image-name: nameoftheiso-38
+          installer-repo: development
+          installer-major-version: 38
+      - name: install github CLI
+        run: |
+          sudo dnf install 'dnf-command(config-manager)' -y
+          sudo dnf config-manager --add-repo https://cli.github.com/packages/rpm/gh-cli.repo
+          sudo dnf install gh -y
+      - name: Upload ISO
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run:
+          gh release upload ${{ needs.release-please.outputs.tag }} ${{ steps.isogenerator.outputs.iso-path }} -R ublue-os/main --clobber
+      - name: Upload SHA256SUM
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run:
+          gh release upload ${{ needs.release-please.outputs.tag }} ${{ steps.isogenerator.outputs.sha256sum-path }} -R ublue-os/main --clobber
+
 ```
 
 This action expects the following inputs:
 - `image-name`: The name of the ISO to generate.  This does not include the ISO extension.
 - `installer-major-version`: The major version of the Fedora installer to use.  This is usually the same as the image major version.
-- `kickstart-file-path`: The path to the kickstart file to use.
+- `installer-repo`: Either `development` to grab the latest Fedora installer, or `release` for the latest stable release
 
 This action will generate an ISO and output the path to the file.
 

@@ -59,7 +59,6 @@ patch_grub_cfg() {
     readonly EFI_ROOT="${WORK_DIR}/overlay/EFI"
     mkdir -p "${WORK_DIR}/overlay/boot/grub2"
     mkdir -p "${WORK_DIR}/overlay/EFI/BOOT"
-    mkdir -p "${EFI_ROOT}/EFI/BOOT"
 
     tree "${WORK_DIR}"
     for GRUB_CFG in "${EFI_GRUB_CFG_FILES[@]}"; do

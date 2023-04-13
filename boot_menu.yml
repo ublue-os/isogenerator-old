@@ -27,5 +27,9 @@ ublue_variants:
         info: no DE
   - label: ublue-os/bluefin
     ks: /kickstart/ublue-os-bluefin.ks
+    subvariants:
+      - label: latest driver
+      - label: 470xx driver
+        suffix: -470
     flavors:
-      - label: main
+      - label: bluefin

@@ -27,13 +27,7 @@ runs:
           --enablerepo='fedora,updates' \
           --setopt install_weak_deps=0 \
           --assumeyes \
-          ansible \
-          curl \
-          isomd5sum \
-          jq \
-          parted \
-          tree \
-          xorriso
+          $(cat deps.txt)
         
     - name: Download Fedora Everything Installer
       shell: bash

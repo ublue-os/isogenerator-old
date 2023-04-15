@@ -65,14 +65,13 @@ patch_grub_cfg() {
 
     tree "${WORK_DIR}"
     for GRUB_CFG in "${EFI_GRUB_CFG_FILES[@]}"; do
-        ansible -m template \
-            -e @boot_menu.yml \
-            -e "BOOT_TYPE=efi" \
-            -e "VOLUME_ID=${VOLUME_ID}" \
-            -e "RELEASE=${RELEASE}" \
-            -a "src=${SCRIPT_DIR}/installer/overlay/${ARCH}/${GRUB_CFG}
-                dest=${WORK_DIR}/overlay/${GRUB_CFG}" \
-            localhost
+        jinja2 --strict \
+            -o "${WORK_DIR}/overlay/${GRUB_CFG}" \
+            -D "BOOT_TYPE=efi" \
+            -D "VOLUME_ID=${VOLUME_ID}" \
+            -D "RELEASE=${RELEASE}" \
+            "${SCRIPT_DIR}/installer/overlay/${ARCH}/${GRUB_CFG}" \
+            boot_menu.yml
     done
 
     sudo mount -o loop "${ESP_IMG}" "${WORK_DIR}/overlay/EFI"
@@ -80,29 +79,26 @@ patch_grub_cfg() {
 
     tree "${WORK_DIR}"
     for GRUB_CFG in "${EFI_GRUB_CFG_FILES[@]}"; do
-        ansible -m template \
-            --become \
-            -e @boot_menu.yml \
-            -e "BOOT_TYPE=efi" \
-            -e "VOLUME_ID=${VOLUME_ID}" \
-            -e "RELEASE=${RELEASE}" \
-            -a "src=${SCRIPT_DIR}/installer/overlay/${ARCH}/${GRUB_CFG}
-                dest=${EFI_ROOT}/${GRUB_CFG}" \
-            localhost
+        sudo jinja2 --strict \
+            -o "${EFI_ROOT}/${GRUB_CFG}" \
+            -D "BOOT_TYPE=efi" \
+            -D "VOLUME_ID=${VOLUME_ID}" \
+            -D "RELEASE=${RELEASE}" \
+            "${SCRIPT_DIR}/installer/overlay/${ARCH}/${GRUB_CFG}" \
+            boot_menu.yml
     done
 
     MBR_GRUB_CFG_FILES=(
         boot/grub2/grub.cfg
     )
     for GRUB_CFG in "${MBR_GRUB_CFG_FILES[@]}"; do
-        ansible -m template \
-            -e @boot_menu.yml \
-            -e "BOOT_TYPE=mbr" \
-            -e "VOLUME_ID=${VOLUME_ID}" \
-            -e "RELEASE=${RELEASE}" \
-            -a "src=${SCRIPT_DIR}/installer/overlay/${ARCH}/${GRUB_CFG}
-                dest=${WORK_DIR}/overlay/${GRUB_CFG}" \
-            localhost
+        jinja2 --strict \
+            -o "${WORK_DIR}/overlay/${GRUB_CFG}" \
+            -D "BOOT_TYPE=mbr" \
+            -D "VOLUME_ID=${VOLUME_ID}" \
+            -D "RELEASE=${RELEASE}" \
+            "${SCRIPT_DIR}/installer/overlay/${ARCH}/${GRUB_CFG}" \
+            boot_menu.yml
     done
 }
 

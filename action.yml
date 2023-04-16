@@ -41,13 +41,15 @@ runs:
 
     - name: Install Dependencies
       shell: bash
+      working-directory: ${{ github.action_path }}
       run: |
+        PACKAGES=$(cat deps.txt)
         dnf install \
           --disablerepo='*' \
           --enablerepo='fedora,updates' \
           --setopt install_weak_deps=0 \
           --assumeyes \
-          $(curl -s https://raw.githubusercontent.com/ublue-os/isogenerator/main/deps.txt)
+          $PACKAGES
         
     - name: Download Fedora Everything Installer
       shell: bash

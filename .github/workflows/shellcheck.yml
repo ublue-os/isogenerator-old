@@ -59,7 +59,7 @@ jobs:
     permissions:
       contents: write
       pull-requests: write
-    if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+    if: contains(fromJSON(['refs/heads/main', 'refs/tags'], github.ref) && github.event_name != 'pull_request'
     needs:
       - shellcheck
       - selftest

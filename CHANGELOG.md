@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.2](https://github.com/ublue-os/isogenerator/compare/v1.0.1...v1.0.2) (2023-04-16)
+
+
+### Bug Fixes
+
+* add tag push trigger so we can get the correct github.ref ([#47](https://github.com/ublue-os/isogenerator/issues/47)) ([ccc6ba5](https://github.com/ublue-os/isogenerator/commit/ccc6ba5255590feadd3db6031189f2817017f12d))
+
 ## [1.0.1](https://github.com/ublue-os/isogenerator/compare/v1.0.0...v1.0.1) (2023-04-16)
 
 

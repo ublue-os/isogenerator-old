@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.0.1](https://github.com/ublue-os/isogenerator/compare/v1.0.0...v1.0.1) (2023-04-16)
+
+
+### Bug Fixes
+
+* fromJSON takes a string, missed quoting in example ([#45](https://github.com/ublue-os/isogenerator/issues/45)) ([318aea6](https://github.com/ublue-os/isogenerator/commit/318aea6148f26bf5ce1c95de153d860b0edb8796))
+* split assignments to avoid shellcheck warnings ([#44](https://github.com/ublue-os/isogenerator/issues/44)) ([80f4939](https://github.com/ublue-os/isogenerator/commit/80f493994cdb313b9d6f3e877f4435beff599f6a))
+
 ## 1.0.0 (2023-04-16)
 
 

@@ -47,7 +47,7 @@ runs:
           --enablerepo='fedora,updates' \
           --setopt install_weak_deps=0 \
           --assumeyes \
-          $(curl -s https://raw.githubusercontent.com/ublue-os/isogenerator/main/deps.txt)
+          $(curl -s https://raw.githubusercontent.com/ublue-os/isogenerator/${{ github.action_ref	}}/deps.txt)
         
     - name: Download Fedora Everything Installer
       shell: bash

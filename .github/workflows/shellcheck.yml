@@ -7,6 +7,8 @@ on:
       - '**.md'
       - '**.txt'
   push:
+    branches:
+      - main
     paths-ignore:
       - '**.md'
       - '**.txt'
@@ -64,3 +66,23 @@ jobs:
         with:
           name: ublue-test.iso
           path: ublue-test.iso
+
+  release-please:
+    permissions:
+      contents: write
+      pull-requests: write
+    if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+    needs:
+      - shellcheck
+      - isopatch-test
+    runs-on: ubuntu-latest
+    outputs:
+      releases_created: ${{ steps.release-please.outputs.releases_created }}
+      tag: ${{ steps.release-please.outputs.tag_name }}
+      upload_url: ${{ steps.release-please.outputs.upload_url }}
+    steps:
+      - uses: google-github-actions/release-please-action@v3
+        id: release-please
+        with:
+          release-type: node
+          package-name: release-please-action

@@ -82,3 +82,6 @@ outputs:
   iso-path:
     description: 'Path to the generated ISO'
     value: ${{ steps.build.outputs.ISO_FILENAME }}
+  iso-name:
+    description: 'ISO name without path'
+    value: ${{ steps.iso-name.outputs.iso_name }}

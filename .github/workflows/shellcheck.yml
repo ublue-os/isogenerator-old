@@ -52,8 +52,8 @@ jobs:
       - name: upload test result as artifact
         uses: actions/upload-artifact@v3
         with:
-          path: ${{ steps.selftest.outputs.iso-path }}
-          name: ublue-test.iso
+          path: ${{ steps.selftest.outputs.iso-name }}
+          name: ${{ steps.selftest.outputs.iso-name }}
 
   release-please:
     permissions:

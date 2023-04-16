@@ -4,10 +4,10 @@ export PS4='+ \e[31m${FUNCNAME[0]:-isopatch}\e[39m:\e[97m${LINENO}\e[39m:> '
 set -ouex pipefail
 
 # Global state, please keep to a minimum
-# shellcheck disable=SC2155
-readonly SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-# shellcheck disable=SC2155
-readonly WORK_DIR="$(mktemp -d -p "$SCRIPT_DIR")"
+SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+readonly SCRIPT_DIR
+WORK_DIR="$(mktemp -d -p "$SCRIPT_DIR")"
+readonly WORK_DIR
 if [[ ! "${WORK_DIR}" || ! -d "${WORK_DIR}" ]]; then
   echo "Could not create temp dir"
   exit 1
@@ -21,31 +21,29 @@ trap cleanup EXIT ERR
 
 # Main Function for the script
 main() {
-    # shellcheck disable=SC2155
-    readonly INPUT_ISO="$1"
-    # shellcheck disable=SC2155
-    readonly OUTPUT_ISO="${SCRIPT_DIR}/$(basename "${2:-output.iso}")"
+    INPUT_ISO="$1"
+    readonly INPUT_ISO
+    OUTPUT_ISO="${SCRIPT_DIR}/$(basename "${2:-output.iso}")"
+    readonly OUTPUT_ISO
 
     # ISO release version and architecture are embedded in .discinfo
     xorriso -indev "${INPUT_ISO}" -osirrox on -extract /.discinfo "${WORK_DIR}/.discinfo"
 
-    # shellcheck disable=SC2155
-    readonly RELEASE="$(sed "2q;d" "${WORK_DIR}/.discinfo")"
-    # shellcheck disable=SC2155
-    readonly ARCH="$(sed "3q;d" "${WORK_DIR}/.discinfo")"
-    # shellcheck disable=SC2155
-    readonly VOLUME_ID="$(xorriso -indev "${INPUT_ISO}" -pvd_info 2> /dev/null | awk '/^Volume Id/{print $NF}')"
+    RELEASE="$(sed "2q;d" "${WORK_DIR}/.discinfo")"
+    readonly RELEASE
+    ARCH="$(sed "3q;d" "${WORK_DIR}/.discinfo")"
+    readonly ARCH
+    VOLUME_ID="$(xorriso -indev "${INPUT_ISO}" -pvd_info 2> /dev/null | awk '/^Volume Id/{print $NF}')"
+    readonly VOLUME_ID
 
-    # Splice ESP.img from Original ISO
-    # shellcheck disable=SC2155
-    readonly ESP_IMG="$(mkesp "${INPUT_ISO}")"
+    ESP_IMG="$(mkesp "${INPUT_ISO}")"
+    readonly ESP_IMG
 
     # Prepare overlay
-    # shellcheck disable=SC2155
-
     patch_grub_cfg 
     generate_ks
     copy_secure_boot_keys
+
     # Some overlayed files will have a different UID and GID from the ones that
     # already came on the source ISO unless setting to root
     sudo chown 0:0 -R "${ESP_IMG}" "${WORK_DIR}/overlay"

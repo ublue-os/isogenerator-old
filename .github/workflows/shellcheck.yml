@@ -32,40 +32,28 @@ jobs:
       - name: run shellcheck
         run: ./util/shellcheck isopatch.sh
 
-  isopatch-test:
-    name: test isopatch by running it
-    runs-on: ubuntu-22.04
+  selftest:
+    permissions:
+      contents: read
+    runs-on: ubuntu-latest
     container:
       image: fedora:38
       options: --privileged
     steps:
-      # Checkout push-to-registry action GitHub repository
-      - name: Checkout Push to Registry action
+      - name: checkout to execute local action
         uses: actions/checkout@v3
-
-      - name: install dependencies
-        run: |
-          sudo dnf install \
-            --disablerepo='*' \
-            --enablerepo='fedora,updates' \
-            --setopt install_weak_deps=0 \
-            --assumeyes \
-            $(cat deps.txt)
-
-      - name: fetch net installer to patch
-        run: |
-          curl -L $EVERYTHING_INSTALLER_URL -o Fedora-Everything-netinst-x86_64.iso
-        env:
-          EVERYTHING_INSTALLER_URL: https://mirror.fcix.net/fedora/linux/development/38/Everything/x86_64/os/images/boot.iso
-
-      - name: run isopatch.sh
-        run: |
-          ./isopatch.sh Fedora-Everything-netinst-x86_64.iso ublue-test.iso
-
-      - uses: actions/upload-artifact@v3
+      - name: do selftest of the action
+        uses: ./
+        id: selftest
         with:
+          image-name: ublue-test
+          installer-major-version: 38
+          installer-repo: development
+      - name: upload test result as artifact
+        uses: actions/upload-artifact@v3
+        with:
+          path: ${{ steps.selftest.outputs.iso-path }}
           name: ublue-test.iso
-          path: ublue-test.iso
 
   release-please:
     permissions:
@@ -74,7 +62,7 @@ jobs:
     if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
     needs:
       - shellcheck
-      - isopatch-test
+      - selftest
     runs-on: ubuntu-latest
     outputs:
       releases_created: ${{ steps.release-please.outputs.releases_created }}

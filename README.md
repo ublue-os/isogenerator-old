@@ -51,7 +51,8 @@ This action expects the following inputs:
 - `image-name`: The name of the ISO to generate.  This does not include the ISO extension.
 - `installer-major-version`: The major version of the Fedora installer to use.  This is usually the same as the image major version.
 - `installer-repo`: Either `development` to grab the latest Fedora installer, or `release` for the latest stable release
-
+- `cpu-arch`: CPU architecture for the installer ISO. Optional, defaults to `x86_64`
+- `output-filename`: Output filename for ISO. Optional, defaults to `${IMAGE_NAME}-${MAJOR_VERSION}-${ARCH}-${DATE}.iso"`
 This action will generate an ISO and output the path to the file.
 
 ## Why this method?

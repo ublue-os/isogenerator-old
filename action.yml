@@ -41,7 +41,7 @@ runs:
 
     - name: Install Dependencies
       shell: bash
-      working_directory: ${{ github.action_path }}
+      working-directory: ${{ github.action_path }}
       run: |
         PACKAGES=$(cat deps.txt)
         dnf install \

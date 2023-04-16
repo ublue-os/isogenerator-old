@@ -7,6 +7,8 @@ on:
       - '**.md'
       - '**.txt'
   push:
+    branches:
+      - main
     paths-ignore:
       - '**.md'
       - '**.txt'
@@ -66,7 +68,7 @@ jobs:
           path: ublue-test.iso
 
   release-please:
-    if: ${{ github.ref }} == 'refs/heads/main'
+    if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
     needs:
       - shellcheck
       - isopatch-test

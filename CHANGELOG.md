@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.4](https://github.com/ublue-os/isogenerator/compare/v1.0.3...v1.0.4) (2023-04-17)
+
+
+### Bug Fixes
+
+* use $PWD because github.action_path points to the wrong place ([#51](https://github.com/ublue-os/isogenerator/issues/51)) ([52dd6e0](https://github.com/ublue-os/isogenerator/commit/52dd6e0ec62b90db887472f24a1e66d25ded1441))
+
 ## [1.0.3](https://github.com/ublue-os/isogenerator/compare/v1.0.2...v1.0.3) (2023-04-17)
 
 

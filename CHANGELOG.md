@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.3](https://github.com/ublue-os/isogenerator/compare/v1.0.2...v1.0.3) (2023-04-17)
+
+
+### Bug Fixes
+
+* don't ignore CHANGELOG.md ([#49](https://github.com/ublue-os/isogenerator/issues/49)) ([17107b8](https://github.com/ublue-os/isogenerator/commit/17107b852859cb0d04e9a178c54584e28fd7f24e))
+
 ## [1.0.2](https://github.com/ublue-os/isogenerator/compare/v1.0.1...v1.0.2) (2023-04-16)
 
 

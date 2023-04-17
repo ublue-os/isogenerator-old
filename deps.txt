@@ -1,3 +1,4 @@
+aria2
 curl
 isomd5sum
 jq

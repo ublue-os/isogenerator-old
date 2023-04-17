@@ -55,9 +55,9 @@ runs:
       shell: bash
       working-directory: ${{ github.action_path }}
       run: |
-        curl -L $EVERYTHING_INSTALLER_URL -o Fedora-Everything-netinst-${{ inputs.cpu-arch }}.iso
+        aria2c $EVERYTHING_INSTALLER_URL -o Fedora-Everything-netinst-${{ inputs.cpu-arch }}.iso
       env:
-        EVERYTHING_INSTALLER_URL: https://mirror.fcix.net/fedora/linux/${{ inputs.installer-repo }}/${{ inputs.installer-major-version }}/Everything/${{ inputs.cpu-arch }}/os/images/boot.iso
+        EVERYTHING_INSTALLER_URL: https://mirror.xenyth.net/fedora/linux/${{ inputs.installer-repo }}/${{ inputs.installer-major-version }}/Everything/${{ inputs.cpu-arch }}/os/images/boot.iso
         
     - name: Build ISO
       shell: bash

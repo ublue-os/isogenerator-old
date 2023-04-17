@@ -178,7 +178,7 @@ EOF
     echo "Created ISO: ${OUTPUT_ISO}"
 
     sha256sum --tag "${OUTPUT_ISO}" | tee "${OUTPUT_ISO}.sha256sum"
-    if [ "${GITHUB_WORKSPACE:-}" != "" ]; then
+    if [ "${GITHUB_WORKSPACE:-}" != "${SCRIPT_DIR}" ]; then
         mv "${OUTPUT_ISO}" "${GITHUB_WORKSPACE}"
         mv "${OUTPUT_ISO}.sha256sum" "${GITHUB_WORKSPACE}"
     fi

@@ -23,7 +23,7 @@ trap cleanup EXIT ERR
 main() {
     INPUT_ISO="$1"
     readonly INPUT_ISO
-    OUTPUT_ISO="${SCRIPT_DIR}/$(basename "${2:-output.iso}")"
+    OUTPUT_ISO="${SCRIPT_DIR}/${2:-output.iso}"
     readonly OUTPUT_ISO
 
     # ISO release version and architecture are embedded in .discinfo
@@ -178,6 +178,10 @@ EOF
     echo "Created ISO: ${OUTPUT_ISO}"
 
     sha256sum --tag "${OUTPUT_ISO}" | tee "${OUTPUT_ISO}.sha256sum"
+    if [ "${GITHUB_WORKSPACE}" != "" ]; then
+        mv "${OUTPUT_ISO}" "${GITHUB_WORKSPACE}"
+        mv "${OUTPUT_ISO}.sha256sum" "${GITHUB_WORKSPACE}"
+    fi
 }
 
 main "$@"

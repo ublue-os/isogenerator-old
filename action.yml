@@ -64,18 +64,18 @@ runs:
       id: build
       working-directory: ${{ github.action_path }}
       run: |
-        ./isopatch.sh Fedora-Everything-netinst-${{ inputs.cpu-arch }}.iso ${{ github.workspace }}/${{ steps.iso-name.outputs.iso_name }}
-        echo "ISO_FILENAME=${{ github.workspace }}/${{ steps.iso-name.outputs.iso_name }}" >> $GITHUB_OUTPUT
+        ./isopatch.sh Fedora-Everything-netinst-${{ inputs.cpu-arch }}.iso ${{ steps.iso-name.outputs.iso_name }}
+        echo "ISO_FILENAME=${{ steps.iso-name.outputs.iso_name }}" >> $GITHUB_OUTPUT
         
     - name: Calculate SHA256 
       id: calculate
       shell: bash
       working-directory: ${{ github.action_path }}
       run: |
-        echo "# ${{ steps.iso-name.outputs.iso_name }}: $(stat -c '%s' ${{ steps.iso-name.outputs.iso_name }}) bytes" > ${{ steps.iso-name.outputs.iso_name }}.sha256sum
-        sha256sum --tag "${{ steps.iso-name.outputs.iso_name }}" >> ${{ steps.iso-name.outputs.iso_name }}.sha256sum
+        echo "# ${{ steps.iso-name.outputs.iso_name }}: $(stat -c '%s' ${{ steps.iso-name.outputs.iso_name }}) bytes" > ${{ github.workspace }}/${{ steps.iso-name.outputs.iso_name }}.sha256sum
+        sha256sum --tag "${{ steps.iso-name.outputs.iso_name }}" >> ${{ github.workspace }}/${{ steps.iso-name.outputs.iso_name }}.sha256sum
         cat ${{ steps.iso-name.outputs.iso_name }}.sha256sum
-        echo "SHA256SUM_FILENAME=${{ github.workspace }}/${{ steps.iso-name.outputs.iso_name }}.sha256sum" >> $GITHUB_OUTPUT
+        echo "SHA256SUM_FILENAME=${{ steps.iso-name.outputs.iso_name }}.sha256sum" >> $GITHUB_OUTPUT
 
 outputs:
   sha256sum-path:

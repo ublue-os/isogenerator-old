@@ -8,6 +8,8 @@ SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 readonly SCRIPT_DIR
 WORK_DIR="$(mktemp -d -p "$SCRIPT_DIR")"
 readonly WORK_DIR
+REPO="${REPO:-releases}"
+readonly REPO
 if [[ ! "${WORK_DIR}" || ! -d "${WORK_DIR}" ]]; then
   echo "Could not create temp dir"
   exit 1
@@ -102,7 +104,16 @@ patch_grub_cfg() {
 
 generate_ks() {
     cp -rv "${SCRIPT_DIR}/installer/kickstart" "${WORK_DIR}/overlay"
+    jinja2 --strict \
+        -D "REPO=${REPO}" \
+        "${SCRIPT_DIR}/installer/kickstart/pre-install.sh" \
+        -o "${WORK_DIR}/overlay/kickstart/pre-install.sh"
+
     sudo cp -rv "${SCRIPT_DIR}/installer/kickstart" "${EFI_ROOT}/kickstart"
+    sudo jinja2 --strict \
+        -D "REPO=${REPO}" \
+        "${SCRIPT_DIR}/installer/kickstart/pre-install.sh" \
+        -o "${EFI_ROOT}/kickstart/pre-install.sh"
 }
 
 copy_secure_boot_keys() {

@@ -48,7 +48,7 @@ jobs:
         with:
           image-name: ublue-test
           installer-major-version: 38
-          installer-repo: development
+          installer-repo: releases
       - name: upload test result as artifact
         uses: actions/upload-artifact@v3
         with:

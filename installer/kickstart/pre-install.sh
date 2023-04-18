@@ -17,5 +17,5 @@ readonly ARCH="$(sed "3q;d" "/run/install/repo/.discinfo")"
 
 cat << EOL > /tmp/ks-urls.txt
 ostreecontainer --url="${URL}" --no-signature-verification
-url --url="https://download.fedoraproject.org/pub/fedora/linux/development/${RELEASE}/Everything/${ARCH}/os/"
+url --url="https://download.fedoraproject.org/pub/fedora/linux/{{ REPO }}/${RELEASE}/Everything/${ARCH}/os/"
 EOL

@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.1.0](https://github.com/ublue-os/isogenerator/compare/v1.0.4...v1.1.0) (2023-04-18)
+
+
+### Features
+
+* promote ISO to F38 GA ([#54](https://github.com/ublue-os/isogenerator/issues/54)) ([75eafd2](https://github.com/ublue-os/isogenerator/commit/75eafd26e6ed13fe18f1547e00df34277b88007e))
+
+
+### Bug Fixes
+
+* move output to GITHUB_WORKSPACE so consumer action can access it ([#53](https://github.com/ublue-os/isogenerator/issues/53)) ([c4987d0](https://github.com/ublue-os/isogenerator/commit/c4987d0629f5ea9daa5d0e88adf2965383a745a9))
+
 ## [1.0.4](https://github.com/ublue-os/isogenerator/compare/v1.0.3...v1.0.4) (2023-04-17)
 
 

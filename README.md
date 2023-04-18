@@ -26,8 +26,8 @@ Example:
         uses: ublue-os/isogenerator@main
         id: isogenerator
         with:
-          image-name: nameoftheiso-38
-          installer-repo: development
+          image-name: nameoftheiso
+          installer-repo: releases
           installer-major-version: 38
       - name: install github CLI
         run: |

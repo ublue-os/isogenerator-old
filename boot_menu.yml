@@ -3,9 +3,13 @@ ublue_variants:
     ks: /kickstart/ublue-os.ks
     flavors:
       - label: silverblue-main
+        info: GNOME
       - label: kinoite-main
+        info: KDE
       - label: vauxite-main
+        info: Xfce
       - label: sericea-main
+        info: Sway
       - label: lxqt-main
       - label: mate-main
       - label: base-main
@@ -18,9 +22,13 @@ ublue_variants:
         suffix: -470
     flavors:
       - label: silverblue-nvidia
+        info: GNOME
       - label: kinoite-nvidia
+        info: KDE
       - label: vauxite-nvidia
+        info: Xfce
       - label: sericea-nvidia
+        info: Sway
       - label: lxqt-nvidia
       - label: mate-nvidia
       - label: base-nvidia

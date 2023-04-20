@@ -7,7 +7,7 @@ readonly ENROLLMENT_PASSWORD="$2"
 
 if [[ ! -d "/sys/firmware/efi" ]]; then
     echo "EFI mode not detected. Skipping key enrollment."
-    echo 0
+    exit 0
 fi
 
 if [[ ! -f "${SECUREBOOT_KEY}" ]]; then
@@ -15,4 +15,4 @@ if [[ ! -f "${SECUREBOOT_KEY}" ]]; then
     exit 1
 fi
 
-echo -e "${ENROLLMENT_PASSWORD}\n${ENROLLMENT_PASSWORD}" | mokutil --import "${SECUREBOOT_KEY}"
+echo -e "${ENROLLMENT_PASSWORD}\n${ENROLLMENT_PASSWORD}" | mokutil --import "${SECUREBOOT_KEY}" ||:

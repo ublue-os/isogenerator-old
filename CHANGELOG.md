@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.2.0](https://github.com/ublue-os/isogenerator/compare/v1.1.0...v1.2.0) (2023-04-20)
+
+
+### Features
+
+* add DE info to image menu ([#56](https://github.com/ublue-os/isogenerator/issues/56)) ([51b09d7](https://github.com/ublue-os/isogenerator/commit/51b09d7e6a0d6373261c4b16fc8a43f6db886e5f))
+
+
+### Bug Fixes
+
+* correct EFI mode check and ensure mokutil does not cause the installer to fail ([#58](https://github.com/ublue-os/isogenerator/issues/58)) ([4f8f574](https://github.com/ublue-os/isogenerator/commit/4f8f574de0573788756211c897c96d72166a6f6b))
+
 ## [1.1.0](https://github.com/ublue-os/isogenerator/compare/v1.0.4...v1.1.0) (2023-04-18)
 
 

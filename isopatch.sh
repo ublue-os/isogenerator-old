@@ -4,6 +4,8 @@ export PS4='+ \e[31m${FUNCNAME[0]:-isopatch}\e[39m:\e[97m${LINENO}\e[39m:> '
 set -ouex pipefail
 
 # Global state, please keep to a minimum
+BOOT_MENU_PATH="${BOOT_MENU_PATH:-boot_menu.yml}"
+readonly BOOT_MENU_PATH
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 readonly SCRIPT_DIR
 WORK_DIR="$(mktemp -d -p "$SCRIPT_DIR")"
@@ -71,7 +73,7 @@ patch_grub_cfg() {
             -D "VOLUME_ID=${VOLUME_ID}" \
             -D "RELEASE=${RELEASE}" \
             "${SCRIPT_DIR}/installer/overlay/${ARCH}/${GRUB_CFG}" \
-            boot_menu.yml
+            "${BOOT_MENU_PATH}"
     done
 
     sudo mount -o loop "${ESP_IMG}" "${WORK_DIR}/overlay/EFI"
@@ -85,7 +87,7 @@ patch_grub_cfg() {
             -D "VOLUME_ID=${VOLUME_ID}" \
             -D "RELEASE=${RELEASE}" \
             "${SCRIPT_DIR}/installer/overlay/${ARCH}/${GRUB_CFG}" \
-            boot_menu.yml
+            "${BOOT_MENU_PATH}"
     done
 
     MBR_GRUB_CFG_FILES=(
@@ -98,7 +100,7 @@ patch_grub_cfg() {
             -D "VOLUME_ID=${VOLUME_ID}" \
             -D "RELEASE=${RELEASE}" \
             "${SCRIPT_DIR}/installer/overlay/${ARCH}/${GRUB_CFG}" \
-            boot_menu.yml
+            "${BOOT_MENU_PATH}"
     done
 }
 

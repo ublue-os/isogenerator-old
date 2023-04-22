@@ -49,6 +49,7 @@ jobs:
           image-name: ublue-test
           installer-major-version: 38
           installer-repo: releases
+          boot-menu-path: boot_menu.yml
       - name: upload test result as artifact
         uses: actions/upload-artifact@v3
         with:

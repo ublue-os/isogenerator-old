@@ -6,6 +6,8 @@ set -ouex pipefail
 # Global state, please keep to a minimum
 BOOT_MENU_PATH="${BOOT_MENU_PATH:-boot_menu.yml}"
 readonly BOOT_MENU_PATH
+GITHUB_REPOSITORY_OWNER="${GITHUB_REPOSITORY_OWNER:-ublue-os}"
+readonly GITHUB_REPOSITORY_OWNER
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 readonly SCRIPT_DIR
 WORK_DIR="$(mktemp -d -p "$SCRIPT_DIR")"
@@ -70,6 +72,7 @@ patch_grub_cfg() {
         jinja2 --strict \
             -o "${WORK_DIR}/overlay/${GRUB_CFG}" \
             -D "BOOT_TYPE=efi" \
+            -D "GITHUB_REPOSITORY_OWNER=${GITHUB_REPOSITORY_OWNER}" \
             -D "VOLUME_ID=${VOLUME_ID}" \
             -D "RELEASE=${RELEASE}" \
             "${SCRIPT_DIR}/installer/overlay/${ARCH}/${GRUB_CFG}" \
@@ -84,6 +87,7 @@ patch_grub_cfg() {
         sudo jinja2 --strict \
             -o "${EFI_ROOT}/${GRUB_CFG}" \
             -D "BOOT_TYPE=efi" \
+            -D "GITHUB_REPOSITORY_OWNER=${GITHUB_REPOSITORY_OWNER}" \
             -D "VOLUME_ID=${VOLUME_ID}" \
             -D "RELEASE=${RELEASE}" \
             "${SCRIPT_DIR}/installer/overlay/${ARCH}/${GRUB_CFG}" \
@@ -97,6 +101,7 @@ patch_grub_cfg() {
         jinja2 --strict \
             -o "${WORK_DIR}/overlay/${GRUB_CFG}" \
             -D "BOOT_TYPE=mbr" \
+            -D "GITHUB_REPOSITORY_OWNER=${GITHUB_REPOSITORY_OWNER}" \
             -D "VOLUME_ID=${VOLUME_ID}" \
             -D "RELEASE=${RELEASE}" \
             "${SCRIPT_DIR}/installer/overlay/${ARCH}/${GRUB_CFG}" \

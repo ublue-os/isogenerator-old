@@ -1,5 +1,16 @@
 # Changelog
 
+## [2.0.0](https://github.com/ublue-os/isogenerator/compare/v1.2.0...v2.0.0) (2023-04-22)
+
+
+### ⚠ BREAKING CHANGES
+
+* allow customized boot_menu.yml from consumer ([#59](https://github.com/ublue-os/isogenerator/issues/59))
+
+### Features
+
+* allow customized boot_menu.yml from consumer ([#59](https://github.com/ublue-os/isogenerator/issues/59)) ([ebd119b](https://github.com/ublue-os/isogenerator/commit/ebd119bb757839e869368f92064ba29436fd0ff7))
+
 ## [1.2.0](https://github.com/ublue-os/isogenerator/compare/v1.1.0...v1.2.0) (2023-04-20)
 
 

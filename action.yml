@@ -68,8 +68,9 @@ runs:
       working-directory: ${{ github.action_path }}
       env:
         BOOT_MENU_PATH: ${{ github.workspace }}/${{ inputs.boot-menu-path }}
+        GITHUB_REPOSITORY_OWNER: ${{ github.repository_owner }}
+        REPO: ${{ inputs.installer-repo }}
       run: |
-        export REPO="${{ inputs.installer-repo }}"
         ./isopatch.sh Fedora-Everything-netinst-${{ inputs.cpu-arch }}.iso ${{ steps.iso-name.outputs.iso_name }}
         echo "ISO_FILENAME=${{ steps.iso-name.outputs.iso_name }}" >> $GITHUB_OUTPUT
         

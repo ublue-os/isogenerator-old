@@ -1,5 +1,13 @@
 # Changelog
 
+## [2.0.1](https://github.com/ublue-os/isogenerator/compare/v2.0.0...v2.0.1) (2023-05-19)
+
+
+### Bug Fixes
+
+* don't hardcode ublue-os on grub.cfg, use github repository name ([#61](https://github.com/ublue-os/isogenerator/issues/61)) ([111381f](https://github.com/ublue-os/isogenerator/commit/111381f493c913aaddbc82801ab1f0bacbc8deeb))
+* use new mirror for boot.iso ([#66](https://github.com/ublue-os/isogenerator/issues/66)) ([d7b37f0](https://github.com/ublue-os/isogenerator/commit/d7b37f0201f57e28d18af91a00ec2f58583f7706))
+
 ## [2.0.0](https://github.com/ublue-os/isogenerator/compare/v1.2.0...v2.0.0) (2023-04-22)
 
 

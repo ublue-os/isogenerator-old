@@ -1,3 +1,4 @@
-SECUREBOOT_KEY="/run/install/repo/ublue-os-nvidia-public-key.der"
+SECUREBOOT_KEY_OLD="/run/install/repo/ublue-os-nvidia-public-key.der"
+SECUREBOOT_KEY="/run/install/repo/ublue-os-akmods-public-key.der"
 # Not a secure password, but needed for scripted key enrollment
 ENROLLMENT_PASSWORD="ublue-os"

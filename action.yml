@@ -60,7 +60,7 @@ runs:
       run: |
         aria2c $EVERYTHING_INSTALLER_URL -o Fedora-Everything-netinst-${{ inputs.cpu-arch }}.iso
       env:
-        EVERYTHING_INSTALLER_URL: https://mirror.xenyth.net/fedora/linux/${{ inputs.installer-repo }}/${{ inputs.installer-major-version }}/Everything/${{ inputs.cpu-arch }}/os/images/boot.iso
+        EVERYTHING_INSTALLER_URL: https://na.edge.kernel.org/fedora/${{ inputs.installer-repo }}/${{ inputs.installer-major-version }}/Everything/${{ inputs.cpu-arch }}/os/images/boot.iso
         
     - name: Build ISO
       shell: bash

@@ -197,7 +197,7 @@ EOF
 
     {
         stat -c "# ${OUTPUT_ISO} - size %s bytes" "${OUTPUT_ISO}"
-        sha256sum --tag "${OUTPUT_ISO}"
+        sha256sum --tag $(basename "${OUTPUT_ISO}")
     } | tee "${OUTPUT_ISO}.sha256sum"
     if [ "${GITHUB_WORKSPACE:-}" != "${SCRIPT_DIR}" ]; then
         mv "${OUTPUT_ISO}" "${GITHUB_WORKSPACE}"

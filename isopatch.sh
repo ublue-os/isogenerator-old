@@ -195,10 +195,13 @@ EOF
     implantisomd5 "${OUTPUT_ISO}"
     echo "Created ISO: ${OUTPUT_ISO}"
 
-    {
-        stat -c "# ${OUTPUT_ISO} - size %s bytes" "${OUTPUT_ISO}"
-        sha256sum --tag "$(basename "${OUTPUT_ISO}")"
-    } | tee "${OUTPUT_ISO}.sha256sum"
+    # Only include the filename in the output or it breaks validation checks
+    (
+        ISO_FILE="$(basename "${OUTPUT_ISO}")"
+        cd "$(dirname "${OUTPUT_ISO}")"
+        stat -c "# ${ISO_FILE} - size %s bytes" "${ISO_FILE}"
+        sha256sum --tag "${ISO_FILE}"
+    ) | tee "${OUTPUT_ISO}.sha256sum"
     if [ "${GITHUB_WORKSPACE:-}" != "${SCRIPT_DIR}" ]; then
         mv "${OUTPUT_ISO}" "${GITHUB_WORKSPACE}"
         mv "${OUTPUT_ISO}.sha256sum" "${GITHUB_WORKSPACE}"

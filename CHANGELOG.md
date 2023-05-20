@@ -1,5 +1,13 @@
 # Changelog
 
+## [2.0.2](https://github.com/ublue-os/isogenerator/compare/v2.0.1...v2.0.2) (2023-05-20)
+
+
+### Bug Fixes
+
+* improve stat and sha256sum file path handling ([#70](https://github.com/ublue-os/isogenerator/issues/70)) ([4b3a0a9](https://github.com/ublue-os/isogenerator/commit/4b3a0a9de439fb18c8b3b6262c18d28e6bd66f2c))
+* use basename to strip file path of ISO file in sha256sum file ([#68](https://github.com/ublue-os/isogenerator/issues/68)) ([ce9ad6e](https://github.com/ublue-os/isogenerator/commit/ce9ad6ef133a78458784fdbe05308419f1392c47))
+
 ## [2.0.1](https://github.com/ublue-os/isogenerator/compare/v2.0.0...v2.0.1) (2023-05-19)
 
 

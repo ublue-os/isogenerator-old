@@ -10,7 +10,7 @@ for ARG in `cat /proc/cmdline`; do
     fi
 done
 
-URL="${URL:-${DEFAULT_URL}}"
+URL=$(echo "${URL:-${DEFAULT_URL}}" | tr "[:upper:]" "[:lower:]")
 
 readonly RELEASE="$(sed "2q;d" "/run/install/repo/.discinfo")"
 readonly ARCH="$(sed "3q;d" "/run/install/repo/.discinfo")"

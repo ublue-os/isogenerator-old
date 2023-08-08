@@ -1,0 +1,35 @@
+<%page args="kernels, runtime_img, runtime_base, basearch, inroot, outroot, product, isolabel"/>
+<%
+configdir="tmp/config_files/x86"
+PXEBOOTDIR="images/pxeboot"
+STAGE2IMG="images/install.img"
+GRUB2DIR="boot/grub2"
+KERNELDIR=PXEBOOTDIR
+LORAXDIR="usr/share/lorax/"
+
+## Don't allow spaces or escape characters in the iso label
+def valid_label(ch):
+    return ch.isalnum() or ch == '_'
+
+isolabel = ''.join(ch if valid_label(ch) else '-' for ch in isolabel)
+
+import os
+from os.path import basename
+from pylorax.sysutils import joinpaths
+
+# Test the runtime_img, if it is > 4GiB we need to set -iso-level to 3
+if os.stat(joinpaths(inroot, runtime_img)).st_size >= 4*1024**3:
+    isoargs = "-iso-level 3"
+else:
+    isoargs = ""
+%>
+
+runcmd jinja2 \
+  --strict \
+  -o ${GRUB2DIR}/grub.cfg \
+  -D "BOOT_TYPE=efi" \
+  -D "GITHUB_REPOSITORY_OWNER=${github_repository_owner}" \
+  -D "VOLUME_ID=${isolabel}" \
+  -D "RELEASE=${product.release}" \
+  ${grub_cfg_template} \
+  ${boot_menu_template}

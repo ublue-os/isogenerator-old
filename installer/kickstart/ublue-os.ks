@@ -4,5 +4,7 @@
 
 %include /tmp/ks-urls.txt
 
+bootloader --append="rd.luks.options=discard"
+
 %post --logfile=/root/ks-post.log --erroronfail
 %end

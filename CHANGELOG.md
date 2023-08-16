@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.1.0](https://github.com/ublue-os/isogenerator/compare/v2.0.2...v2.1.0) (2023-08-16)
+
+
+### Features
+
+* **kickstart:** Add support for the Steam Deck ([#75](https://github.com/ublue-os/isogenerator/issues/75)) ([237d201](https://github.com/ublue-os/isogenerator/commit/237d20152c5a14124e97c6a4001ece1481434470))
+
 ## [2.0.2](https://github.com/ublue-os/isogenerator/compare/v2.0.1...v2.0.2) (2023-05-20)
 
 

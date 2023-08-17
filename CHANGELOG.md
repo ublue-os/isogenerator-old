@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.1.1](https://github.com/ublue-os/isogenerator/compare/v2.1.0...v2.1.1) (2023-08-17)
+
+
+### Bug Fixes
+
+* **deck:** Move installer resolution override to grub.cfg ([#77](https://github.com/ublue-os/isogenerator/issues/77)) ([5dba32d](https://github.com/ublue-os/isogenerator/commit/5dba32d84e222c0925bb98d0afe57db90394428a))
+
 ## [2.1.0](https://github.com/ublue-os/isogenerator/compare/v2.0.2...v2.1.0) (2023-08-16)
 
 

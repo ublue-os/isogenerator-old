@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.1.2](https://github.com/ublue-os/isogenerator/compare/v2.1.1...v2.1.2) (2023-08-22)
+
+
+### Bug Fixes
+
+* **deck:** Remove audit karg from installer ([#79](https://github.com/ublue-os/isogenerator/issues/79)) ([a0ed3f8](https://github.com/ublue-os/isogenerator/commit/a0ed3f848bda3a256c35d4ce3f5ce91920325eda))
+
 ## [2.1.1](https://github.com/ublue-os/isogenerator/compare/v2.1.0...v2.1.1) (2023-08-17)
 
 

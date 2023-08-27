@@ -10,6 +10,8 @@
 ##  - ostree_oci_ref     - the REFSPEC for the OCI image to install
 
 <%page args="root, ostree_osname, ostree_oci_ref"/>
-runcmd mkdir  ${root}/ostree
-runcmd ostree --repo=${root}/ostree/repo init --mode=bare
-runcmd bash -c 'skopeo copy ${ostree_oci_ref} oci-archive:${root}/container.tar.gz'
+##runcmd ostree --repo=${root}/ostree/repo init --mode=bare
+##runcmd bash -c 'ostree container image pull --quiet ${root}/ostree/repo ostree-unverified-registry:${ostree_oci_ref}:latest > /dev/null'
+
+runcmd mkdir -p ${root}/var/ublue-os
+runcmd bash -c 'skopeo copy docker://${ostree_oci_ref} oci:${root}/var/ublue-os/image'

@@ -10,11 +10,11 @@
 <%page args="ostree_osname, ostree_oci_ref"/>
 # If this is in the rootfs of the installroot then ostree fails with "not enough space"
 append etc/fstab "tmpfs /var/tmp tmpfs defaults 0 0"
-append usr/share/anaconda/interactive-defaults.ks "ostreecontainer --no-signature-verification --transport oci-archive --stateroot=${ostree_osname} --url=/container.tar.gz"
+append usr/share/anaconda/interactive-defaults.ks "ostreecontainer --no-signature-verification --transport oci --url=/var/ublue-os/image"
+
 append usr/share/anaconda/interactive-defaults.ks "firewall --use-system-defaults"
 
 append usr/share/anaconda/interactive-defaults.ks "%post --erroronfail"
-append usr/share/anaconda/interactive-defaults.ks "rpm-ostree rebase ostree-image-signed:${ostree_oci_ref}"
 %if ostree_osname != "fedora":
     append usr/share/anaconda/interactive-defaults.ks "rm -f /etc/ostree/remotes.d/${ostree_osname}.conf"
 %endif

@@ -56,6 +56,7 @@ runcmd jinja2 \
   -D "GITHUB_REPOSITORY_OWNER=ublue-os" \
   -D "VOLUME_ID=${isolabel}" \
   -D "RELEASE=${product.release}" \
+  -D "REPO=${repo}" \
   ${outroot}/../../installer/overlay/x86_64/boot/grub2/grub.cfg \
   ${outroot}/../../boot_menu.yml
 runcmd cp -rp ${outroot}/../../installer/kickstart ${outroot}/kickstart

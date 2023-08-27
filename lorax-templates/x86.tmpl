@@ -1,4 +1,4 @@
-<%page args="kernels, runtime_img, runtime_base, basearch, inroot, outroot, product, isolabel, github_repository_owner, grub_cfg_template, boot_menu_template"/>
+<%page args="kernels, runtime_img, runtime_base, basearch, inroot, outroot, product, isolabel"/>
 <%
 configdir="tmp/config_files/x86"
 PXEBOOTDIR="images/pxeboot"
@@ -49,32 +49,37 @@ replace @KERNELPATH@ /${KERNELDIR}/vmlinuz ${GRUB2DIR}/grub.cfg
 replace @INITRDPATH@ /${KERNELDIR}/initrd.img ${GRUB2DIR}/grub.cfg
 replace @ISOLABEL@ '${isolabel}' ${GRUB2DIR}/grub.cfg
 replace @ROOT@ 'inst.stage2=hd:LABEL=${isolabel|udev}' ${GRUB2DIR}/grub.cfg
-
 runcmd jinja2 \
   --strict \
-  -o ${GRUB2DIR}/grub.cfg \
-  -D "BOOT_TYPE=efi" \
-  -D "GITHUB_REPOSITORY_OWNER=${github_repository_owner}" \
+  -o ${outroot}/${GRUB2DIR}/grub.cfg \
+  -D "BOOT_TYPE=mbr" \
+  -D "GITHUB_REPOSITORY_OWNER=ublue-os" \
   -D "VOLUME_ID=${isolabel}" \
   -D "RELEASE=${product.release}" \
-  ${grub_cfg_template} \
-  ${boot_menu_template}
-
+  -D "REPO=${repo}" \
+  ${outroot}/../../installer/overlay/x86_64/boot/grub2/grub.cfg \
+  ${outroot}/../../boot_menu.yml
+runcmd cp -rp ${outroot}/../../installer/kickstart ${outroot}/kickstart
+runcmd jinja2 \
+  --strict \
+  -o ${outroot}/kickstart/pre-install.sh \
+  ${outroot}/../../installer/kickstart/pre-install.sh
 
 ## WHeeeeeeee, EFI.
 <% efiarch32=None; efiarch64=None %>
-%if exists("boot/efi/EFI/*/gcdia32.efi"):
-    <% efiarch32 = 'IA32' %>
-%endif
 %if exists("boot/efi/EFI/*/gcdx64.efi"):
     <% efiarch64 = 'X64' %>
+%endif
+%if exists("boot/efi/EFI/*/gcdia32.efi"):
+    <% efiarch32 = 'IA32' %>
 %endif
 %if (efiarch32 or efiarch64):
     <%include file="efi.tmpl" args="configdir=configdir, KERNELDIR=KERNELDIR, efiarch32=efiarch32, efiarch64=efiarch64, isolabel=isolabel"/>
 %endif
 
+
 # Create optional product.img and updates.img
-<% filegraft=""; images=["product", "updates"]; compressargs=""; %>
+<% filegraft="kickstart={0}/kickstart".format(outroot); images=["product", "updates"]; compressargs=""; %>
 %for img in images:
     %if exists("%s/%s/" % (LORAXDIR, img)):
         installimg ${compressargs} ${LORAXDIR}/${img}/ images/${img}.img
@@ -96,12 +101,15 @@ runcmd jinja2 \
     <% filegraft += " {0}={1}/{0}".format(basename(f), outroot) %>
 %endfor
 
+
+
 ## Make images/eltoritio.img
 runcmd grub2-mkimage -O i386-pc-eltorito -d ${inroot}/usr/lib/grub/i386-pc \
        -o ${outroot}/images/eltorito.img \
        -p /${GRUB2DIR} \
        iso9660 biosdisk
 treeinfo images-${basearch} eltorito.img images/eltorito.img
+
 
 ## make boot.iso
 runcmd xorrisofs ${isoargs} -o ${outroot}/images/boot.iso \

@@ -8,3 +8,7 @@ python3-pyyaml
 ShellCheck
 tree
 xorriso
+lorax
+ostree
+skopeo
+rpm-ostree

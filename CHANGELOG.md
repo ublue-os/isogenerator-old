@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.1.3](https://github.com/ublue-os/isogenerator/compare/v2.1.2...v2.1.3) (2023-10-10)
+
+
+### Bug Fixes
+
+* **grub.cfg:** Kill rd.live.check to avoid hangs ([#83](https://github.com/ublue-os/isogenerator/issues/83)) ([2299807](https://github.com/ublue-os/isogenerator/commit/22998071f6a83d25556cf59977eb1fff84466d57))
+
 ## [2.1.2](https://github.com/ublue-os/isogenerator/compare/v2.1.1...v2.1.2) (2023-08-22)
 
 

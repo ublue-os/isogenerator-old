@@ -1,0 +1,22 @@
+## Lorax template to configure Anaconda to:
+##  1) Use the repository we embedded in the ISO
+##  2) Work around https://bugzilla.redhat.com/show_bug.cgi?id=1193590
+##  3) Tell anaconda to leave the firewall set up as it was in the ostree
+
+## Args:
+##  - ostree_osname      - the name of the os/name of remote
+##  - ostree_oci_ref     - the REFSPEC of the OCI image to use
+
+<%page args="ostree_osname, ostree_oci_ref"/>
+# If this is in the rootfs of the installroot then ostree fails with "not enough space"
+append etc/fstab "tmpfs /var/tmp tmpfs defaults 0 0"
+append usr/share/anaconda/interactive-defaults.ks "ostreecontainer --no-signature-verification --transport oci --url=/var/ublue-os/image"
+
+append usr/share/anaconda/interactive-defaults.ks "firewall --use-system-defaults"
+
+append usr/share/anaconda/interactive-defaults.ks "%post --erroronfail"
+%if ostree_osname != "fedora":
+    append usr/share/anaconda/interactive-defaults.ks "rm -f /etc/ostree/remotes.d/${ostree_osname}.conf"
+%endif
+append usr/share/anaconda/interactive-defaults.ks "cp /etc/skel/.bash* /root"
+append usr/share/anaconda/interactive-defaults.ks "%end"

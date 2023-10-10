@@ -1,0 +1,17 @@
+## Lorax template to embed an OSTree repository into the installer.iso
+## and configure an interactive installer use to look for it.
+##
+## Note that we pull with depth=0 to only get *one* commit into the
+## ISO, because we obviously don't want the full history.
+
+## Args:
+##  - root               - the root directory of the iso tree
+##  - ostree_osname      - the name of the os/name of remote
+##  - ostree_oci_ref     - the REFSPEC for the OCI image to install
+
+<%page args="root, ostree_osname, ostree_oci_ref"/>
+##runcmd ostree --repo=${root}/ostree/repo init --mode=bare
+##runcmd bash -c 'ostree container image pull --quiet ${root}/ostree/repo ostree-unverified-registry:${ostree_oci_ref}:latest > /dev/null'
+
+runcmd mkdir -p ${root}/var/ublue-os
+runcmd bash -c 'skopeo copy docker://${ostree_oci_ref} oci:${root}/var/ublue-os/image'

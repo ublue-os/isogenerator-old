@@ -18,7 +18,7 @@ Example:
     needs: release-please
     if: needs.release-please.outputs.releases_created
     container: 
-      image: fedora:38
+      image: fedora:39
       options: --privileged
     steps:
       - uses: actions/checkout@v3
@@ -28,7 +28,7 @@ Example:
         with:
           image-name: nameoftheiso
           installer-repo: releases
-          installer-major-version: 38
+          installer-major-version: 39
       - name: install github CLI
         run: |
           sudo dnf install 'dnf-command(config-manager)' -y

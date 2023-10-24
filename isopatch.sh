@@ -46,7 +46,7 @@ main() {
     readonly ESP_IMG
 
     # Prepare overlay
-    patch_grub_cfg 
+    patch_grub_cfg
     generate_ks
     copy_secure_boot_keys
 

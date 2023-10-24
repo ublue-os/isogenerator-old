@@ -2,7 +2,7 @@
 
 set -oue pipefail
 
-DEFAULT_URL="ghcr.io/ublue-os/silverblue-main:38"
+DEFAULT_URL="ghcr.io/ublue-os/silverblue-main:39"
 
 for ARG in `cat /proc/cmdline`; do
     if [[ "${ARG}" =~ ^imageurl= ]]; then

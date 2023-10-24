@@ -36,6 +36,7 @@ main() {
     xorriso -indev "${INPUT_ISO}" -osirrox on -extract /.discinfo "${WORK_DIR}/.discinfo"
 
     RELEASE="$(sed "2q;d" "${WORK_DIR}/.discinfo")"
+    [[ "${RELEASE}" -eq "39" ]] && RELEASE="latest"
     readonly RELEASE
     ARCH="$(sed "3q;d" "${WORK_DIR}/.discinfo")"
     readonly ARCH

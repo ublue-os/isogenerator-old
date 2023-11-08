@@ -37,7 +37,7 @@ jobs:
       contents: read
     runs-on: ubuntu-latest
     container:
-      image: fedora:38
+      image: fedora:39
       options: --privileged
     steps:
       - name: checkout to execute local action
@@ -47,7 +47,7 @@ jobs:
         id: selftest
         with:
           image-name: ublue-test
-          installer-major-version: 38
+          installer-major-version: 39
           installer-repo: releases
           boot-menu-path: boot_menu.yml
       - name: upload test result as artifact

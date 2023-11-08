@@ -23,7 +23,10 @@ trap cleanup EXIT
 # ISO release version and architecture are embedded in .discinfo
 xorriso -indev "${INPUT_ISO}" -osirrox on -extract /.discinfo "${WORK_DIR}/.discinfo"
 
-readonly RELEASE="$(sed "2q;d" "${WORK_DIR}/.discinfo")"
+RELEASE="$(sed "2q;d" "${WORK_DIR}/.discinfo")"
+[[ "${RELEASE}" -eq "39" ]] && RELEASE="latest"
+readonly RELEASE
+
 readonly ARCH="$(sed "3q;d" "${WORK_DIR}/.discinfo")"
 
 readonly VOLUME_ID="$(xorriso -indev "${INPUT_ISO}" -pvd_info 2> /dev/null | grep "^Volume Id" | cut -d ":" -f2 | awk '{$1=$1};1')"

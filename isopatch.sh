@@ -36,6 +36,7 @@ main() {
     xorriso -indev "${INPUT_ISO}" -osirrox on -extract /.discinfo "${WORK_DIR}/.discinfo"
 
     RELEASE="$(sed "2q;d" "${WORK_DIR}/.discinfo")"
+    [[ "${RELEASE}" -eq "39" ]] && RELEASE="latest"
     readonly RELEASE
     ARCH="$(sed "3q;d" "${WORK_DIR}/.discinfo")"
     readonly ARCH
@@ -46,7 +47,7 @@ main() {
     readonly ESP_IMG
 
     # Prepare overlay
-    patch_grub_cfg 
+    patch_grub_cfg
     generate_ks
     copy_secure_boot_keys
 

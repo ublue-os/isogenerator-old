@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.2.0](https://github.com/ublue-os/isogenerator/compare/v2.1.3...v2.2.0) (2023-11-08)
+
+
+### Features
+
+* Update to Fedora 39 and use latest tag ([#86](https://github.com/ublue-os/isogenerator/issues/86)) ([9013ca3](https://github.com/ublue-os/isogenerator/commit/9013ca3152ffea4f1c4936f43e6907e5813941c6))
+
 ## [2.1.3](https://github.com/ublue-os/isogenerator/compare/v2.1.2...v2.1.3) (2023-10-10)
 
 

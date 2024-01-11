@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.3.0](https://github.com/ublue-os/isogenerator/compare/v2.2.0...v2.3.0) (2024-01-11)
+
+
+### Features
+
+* Install secure boot/akmod key on all images ([#88](https://github.com/ublue-os/isogenerator/issues/88)) ([40925bb](https://github.com/ublue-os/isogenerator/commit/40925bb837cfd82bff76b715023b8cfbb7b6af50))
+
 ## [2.2.0](https://github.com/ublue-os/isogenerator/compare/v2.1.3...v2.2.0) (2023-11-08)
 
 

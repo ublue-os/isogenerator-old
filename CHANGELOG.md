@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.3.1](https://github.com/ublue-os/isogenerator/compare/v2.3.0...v2.3.1) (2024-01-12)
+
+
+### Bug Fixes
+
+* Run timeout as it's own line ([89accb0](https://github.com/ublue-os/isogenerator/commit/89accb0524db655584a429dec4cf91f0bb551e71))
+
 ## [2.3.0](https://github.com/ublue-os/isogenerator/compare/v2.2.0...v2.3.0) (2024-01-11)
 
 

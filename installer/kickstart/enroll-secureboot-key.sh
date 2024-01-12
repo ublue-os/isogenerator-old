@@ -15,4 +15,5 @@ if [[ ! -f "${SECUREBOOT_KEY}" ]]; then
     exit 1
 fi
 
-echo -e "${ENROLLMENT_PASSWORD}\n${ENROLLMENT_PASSWORD}" | mokutil --import "${SECUREBOOT_KEY}" --timeout -1 ||:
+mokutil --timeout -1 ||:
+echo -e "${ENROLLMENT_PASSWORD}\n${ENROLLMENT_PASSWORD}" | mokutil --import "${SECUREBOOT_KEY}" ||:

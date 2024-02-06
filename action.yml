@@ -12,9 +12,6 @@ inputs:
     description: 'Fedora repository to use for the installer'
     required: false
     default: 'releases'
-  kickstart-file-path:
-    description: 'Path to the kickstart file'
-    required: true
   cpu-arch:
     description: 'CPU architecture for installer'
     required: false
